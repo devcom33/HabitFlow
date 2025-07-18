@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5431:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: lock_db
+      POSTGRES_PASSWORD: docker0000!
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - "8898:8080"
