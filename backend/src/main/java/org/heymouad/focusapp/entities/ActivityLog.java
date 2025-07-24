@@ -15,8 +15,9 @@ import java.time.LocalDate;
 public class ActivityLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     private LocalDate date;
+    @Enumerated(EnumType.STRING)
     private Status status;
     private Integer level;
 }
