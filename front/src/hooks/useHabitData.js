@@ -30,14 +30,14 @@ const useHabitData = () => {
 
   const addHabit = (habitName) => {
     const newHabit = {
-      id: new Date(),
+      id: Date.now(),
       name: habitName,
       completed: false,
     };
     setHabits((prevHabits) => [...prevHabits, newHabit]);
   };
 
-  return [habits, toggleHabit, addHabit];
+  return [habits, toggleHabit, addHabit, habitData];
 };
 
 export default useHabitData;

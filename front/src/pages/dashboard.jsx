@@ -3,8 +3,10 @@ import NavBar from "../components/NavBar";
 import HabitGrid from "../components/HabitGrid";
 import HabitList from "../components/HabitList";
 import Stats from "../components/Stats";
+import useHabitData from "../hooks/useHabitData";
 
 const Dashboard = () => {
+  const [habits, toggleHabit, addHabit, habitData] = useHabitData();
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <NavBar />
@@ -23,11 +25,15 @@ const Dashboard = () => {
           </div>
 
           <div className="space-y-6">
-            <Stats />
+            <Stats habits={habits} habitData={habitData} />
           </div>
         </div>
 
-        <HabitList />
+        <HabitList
+          habits={habits}
+          toggleHabit={toggleHabit}
+          addHabit={addHabit}
+        />
       </div>
     </div>
   );

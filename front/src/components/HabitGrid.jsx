@@ -5,9 +5,6 @@ const HabitGrid = () => {
   const today = new Date();
   const startDate = new Date(today.getFullYear(), 0, 1);
 
-  console.log("Today : ", today);
-  console.log("startDate : ", startDate);
-
   const weeks = Array.from({ length: 52 }, (_, weekIndex) => (
     <div key={weekIndex} className="flex flex-col gap-1">
       {Array.from({ length: 7 }, (_, dayIndex) => (

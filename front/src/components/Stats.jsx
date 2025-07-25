@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { TrendingUp } from "lucide-react";
 
-const Stats = () => {
+const Stats = ({ habits, habitData }) => {
+  const today = new Date().toISOString().split("T")[0];
+  const completed = habitData[today] || 0;
+  const total = habits.length;
+  const percent = total ? Math.round((completed / total) * 100) : 0;
   return (
     <div className="bg-gray-800 rounded-lg p-6">
       <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
@@ -11,11 +15,13 @@ const Stats = () => {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="text-center">
-          <div className="text-3xl font-bold text-blue-400">1/4</div>
+          <div className="text-3xl font-bold text-blue-400">
+            {completed}/{total}
+          </div>
           <div className="text-gray-400 text-sm">Today's Progress</div>
         </div>
         <div className="text-center">
-          <div className="text-3xl font-bold text-green-400">25%</div>
+          <div className="text-3xl font-bold text-green-400">{percent}</div>
           <div className="text-gray-400 text-sm">Completion Rate</div>
         </div>
         <div className="text-center col-span-2">
