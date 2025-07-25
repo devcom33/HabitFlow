@@ -11,13 +11,12 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "activity_log")
-public class ActivityLog {
+@Table(name = "habit")
+public class Habit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate date;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-    private Integer level;
+    private String name;
+    private boolean completed;
+    private LocalDate createdAt;
 }
