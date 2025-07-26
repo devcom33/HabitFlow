@@ -6,6 +6,8 @@ import org.heymouad.focusapp.repositories.HabitRepository;
 import org.heymouad.focusapp.services.HabitService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class HabitServiceImpl implements HabitService {
@@ -14,5 +16,10 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public Habit saveHabit(Habit habit) {
         return habitRepository.save(habit);
+    }
+
+    @Override
+    public List<Habit> getAllHabit() {
+        return habitRepository.findAll();
     }
 }
