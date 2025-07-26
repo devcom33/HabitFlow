@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getHabitsService } from "../services/getHabitsService";
+import { updateHabitService } from "../services/updateHabitService";
 
 const useHabitData = () => {
   const [loading, setLoading] = useState(true);
@@ -37,10 +38,17 @@ const useHabitData = () => {
   }, [habits]);
 
   const toggleHabit = (habitId) => {
+    console.log("habit id : ", habitId);
     setHabits((prevHabits) =>
-      prevHabits.map((habit) =>
-        habit.id === habitId ? { ...habit, completed: !habit.completed } : habit
-      )
+      prevHabits.map((habit) => {
+        if (habit.id === habitId) {
+          const updatedHabit = { ...habit, completed: !habit.completed };
+          console.log("habit-completed : ", updatedHabit.completed);
+          updateHabitService(habitId, updatedHabit.completed);
+          return updatedHabit;
+        }
+        return habit;
+      })
     );
   };
 
