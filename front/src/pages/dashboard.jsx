@@ -6,10 +6,20 @@ import Stats from "../components/Stats";
 import useHabitData from "../hooks/useHabitData";
 
 const Dashboard = () => {
-  const [habits, toggleHabit, addHabit, habitData] = useHabitData();
+  const {
+    habits,
+    toggleHabit,
+    addHabit,
+    habitData,
+    loading,
+    error,
+    gridLoading,
+    refreshGridData,
+  } = useHabitData();
   const handleDayClick = (dateKey) => {
     console.log(`Clicked on ${dateKey}`);
   };
+  console.log("habit data : ", habitData);
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <NavBar />
@@ -24,7 +34,12 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <HabitGrid habitData={habitData} onDayClick={handleDayClick} />
+            <HabitGrid
+              habitData={habitData}
+              onDayClick={handleDayClick}
+              loading={gridLoading}
+              onRefresh={refreshGridData}
+            />
           </div>
 
           <div className="space-y-6">

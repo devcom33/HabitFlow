@@ -1,7 +1,7 @@
 import React from "react";
-import { Calendar } from "lucide-react";
+import { Calendar, RefreshCw } from "lucide-react";
 
-const HabitGrid = ({ habitData, onDayClick }) => {
+const HabitGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   const today = new Date();
   const startDate = new Date(today.getFullYear(), 0, 1);
 
@@ -17,7 +17,6 @@ const HabitGrid = ({ habitData, onDayClick }) => {
 
   const weeks = [];
   const currentDate = new Date(startDate);
-
   currentDate.setDate(currentDate.getDate() - currentDate.getDay());
 
   for (let week = 0; week < 53; week++) {
@@ -25,26 +24,32 @@ const HabitGrid = ({ habitData, onDayClick }) => {
     for (let day = 0; day < 7; day++) {
       const dayKey = new Date(currentDate).toISOString().split("T")[0];
       const isToday = dayKey === today.toISOString().split("T")[0];
+      const isPastYear = currentDate.getFullYear() < today.getFullYear();
 
-      days.push(
-        <div
-          key={`${week}-${day}`}
-          className={`w-3 h-3 rounded-sm cursor-pointer transition-all hover:scale-110 ${getDayIntensity(
-            currentDate
-          )} ${isToday ? "ring-2 ring-blue-400" : ""}`}
-          onClick={() => onDayClick(dayKey)}
-          title={`${currentDate.toDateString()}: ${
-            habitData[dayKey] || 0
-          } habits completed`}
-        />
-      );
+      if (!isPastYear) {
+        days.push(
+          <div
+            key={`${week}-${day}`}
+            className={`w-3 h-3 rounded-sm cursor-pointer transition-all hover:scale-110 ${getDayIntensity(
+              currentDate
+            )} ${isToday ? "ring-2 ring-blue-400" : ""}`}
+            onClick={() => onDayClick && onDayClick(dayKey)}
+            title={`${currentDate.toDateString()}: ${
+              habitData[dayKey] || 0
+            } habits completed`}
+          />
+        );
+      }
       currentDate.setDate(currentDate.getDate() + 1);
     }
-    weeks.push(
-      <div key={week} className="flex flex-col gap-1">
-        {days}
-      </div>
-    );
+
+    if (days.length > 0) {
+      weeks.push(
+        <div key={week} className="flex flex-col gap-1">
+          {days}
+        </div>
+      );
+    }
   }
 
   return (
@@ -54,19 +59,40 @@ const HabitGrid = ({ habitData, onDayClick }) => {
           <Calendar className="w-5 h-5 text-blue-400" />
           Habit Progress
         </h2>
-        <div className="flex items-center gap-2 text-sm text-gray-400">
-          <span>Less</span>
-          <div className="flex gap-1">
-            <div className="w-3 h-3 bg-gray-800 rounded-sm"></div>
-            <div className="w-3 h-3 bg-green-900 rounded-sm"></div>
-            <div className="w-3 h-3 bg-green-700 rounded-sm"></div>
-            <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
-            <div className="w-3 h-3 bg-green-400 rounded-sm"></div>
+        <div className="flex items-center gap-4">
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              disabled={loading}
+              className="p-1 text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+              title="Refresh grid data"
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
+              />
+            </button>
+          )}
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <span>Less</span>
+            <div className="flex gap-1">
+              <div className="w-3 h-3 bg-gray-800 rounded-sm"></div>
+              <div className="w-3 h-3 bg-green-900 rounded-sm"></div>
+              <div className="w-3 h-3 bg-green-700 rounded-sm"></div>
+              <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
+              <div className="w-3 h-3 bg-green-400 rounded-sm"></div>
+            </div>
+            <span>More</span>
           </div>
-          <span>More</span>
         </div>
       </div>
-      <div className="flex gap-1 overflow-x-auto pb-2">{weeks}</div>
+
+      {loading ? (
+        <div className="flex items-center justify-center h-32">
+          <div className="text-gray-400">Loading grid data...</div>
+        </div>
+      ) : (
+        <div className="flex gap-1 overflow-x-auto pb-2">{weeks}</div>
+      )}
     </div>
   );
 };

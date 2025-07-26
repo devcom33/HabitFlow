@@ -12,7 +12,6 @@ const HabitList = ({ habits, toggleHabit, addHabit }) => {
       setNewHabit("");
     }
   };
-
   return (
     <div className="bg-gray-800 rounded-lg p-6">
       <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
