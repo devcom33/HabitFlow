@@ -1,14 +1,30 @@
 import { useState, useEffect } from "react";
+import { getHabitsService } from "../services/getHabitsService";
 
 const useHabitData = () => {
-  const [habits, setHabits] = useState([
-    { id: 1, name: "Drink 8 glasses of water", completed: false },
-    { id: 2, name: "Exercise for 30 minutes", completed: true },
-    { id: 3, name: "Read for 20 minutes", completed: false },
-    { id: 4, name: "Meditate for 10 minutes", completed: false },
-  ]);
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [habits, setHabits] = useState([]);
   const [habitData, setHabitData] = useState({});
+
+  const fetchHabits = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await getHabitsService();
+      console.log("Fetched habits:", result);
+
+      setHabits(result.habits || result || []);
+    } catch (error) {
+      console.error("Error fetching habits:", error);
+      setError(error.message || "Failed to fetch habits");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchHabits();
+  }, []);
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -34,6 +50,7 @@ const useHabitData = () => {
       name: habitName,
       completed: false,
     };
+
     setHabits((prevHabits) => [...prevHabits, newHabit]);
   };
 

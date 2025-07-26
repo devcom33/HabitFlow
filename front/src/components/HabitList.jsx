@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { CheckCircle, Plus } from "lucide-react";
+import { addHabitService } from "../services/addHabitService";
 
 const HabitList = ({ habits, toggleHabit, addHabit }) => {
   const [newHabit, setNewHabit] = useState("");
 
-  const handleAddHabit = () => {
+  const handleAddHabit = async () => {
     if (newHabit.trim()) {
       addHabit(newHabit.trim());
+      await addHabitService(newHabit.trim(), false);
       setNewHabit("");
     }
-  };
-
-  const handleDayClick = (dateKey) => {
-    console.log(`Clicked on ${dateKey}`);
   };
 
   return (

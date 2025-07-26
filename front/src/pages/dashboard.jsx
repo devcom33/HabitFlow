@@ -7,6 +7,9 @@ import useHabitData from "../hooks/useHabitData";
 
 const Dashboard = () => {
   const [habits, toggleHabit, addHabit, habitData] = useHabitData();
+  const handleDayClick = (dateKey) => {
+    console.log(`Clicked on ${dateKey}`);
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <NavBar />
@@ -21,7 +24,7 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <HabitGrid />
+            <HabitGrid habitData={habitData} onDayClick={handleDayClick} />
           </div>
 
           <div className="space-y-6">
