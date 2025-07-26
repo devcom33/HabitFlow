@@ -1,4 +1,9 @@
 package org.heymouad.focusapp.dtos;
-import java.time.LocalDate;
 
-public record HabitRequestDto(String name, boolean completed, LocalDate createdAt){};
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
+
+
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record HabitRequestDto(String name, Boolean completed){};
