@@ -38,7 +38,7 @@ public class HabitServiceImpl implements HabitService {
         return habitRepository.findAll();
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void resetDailyHabits() {
         log.info("Running daily habit reset...");
         List<Habit> habits = getAllHabit();
@@ -46,6 +46,7 @@ public class HabitServiceImpl implements HabitService {
             if (habit.isCompleted())
             {
                 habit.setCompleted(false);
+                habitRepository.save(habit);
             }
         });
     }
