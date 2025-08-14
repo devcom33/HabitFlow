@@ -20,7 +20,6 @@ import java.util.List;
 public class HabitController {
     private final HabitService habitService;
     private final HabitMapper habitMapper;
-    private final HabitRepository habitRepository;
 
     @PostMapping("/addHabit")
     public ResponseEntity<Habit> saveHabit(@RequestBody HabitDto habitRequestDto)
@@ -37,13 +36,6 @@ public class HabitController {
         List<Habit> habitList = habitService.getAllHabit();
 
         return ResponseEntity.ok(habitList);
-    }
-
-    @PatchMapping("/updateHabit/{id}")
-    public ResponseEntity<Habit> updateHabit(@PathVariable Long id, @RequestBody HabitUpdateRequest habitUpdateRequest)
-    {
-        Habit updatedHabit = habitService.updateHabit(id, habitUpdateRequest.completed());
-        return ResponseEntity.ok(updatedHabit);
     }
 
 }

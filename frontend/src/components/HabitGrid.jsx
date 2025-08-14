@@ -8,7 +8,7 @@ const HabitGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   const getDayIntensity = (date) => {
     const dateKey = date.toISOString().split("T")[0];
     const count = habitData[dateKey] || 0;
-    if (count === 0) return "bg-gray-800";
+    if (count === 0) return "bg-gray-700";
     if (count <= 2) return "bg-green-900";
     if (count <= 4) return "bg-green-700";
     if (count <= 6) return "bg-green-500";

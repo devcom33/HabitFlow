@@ -22,23 +22,13 @@ public class HabitServiceImpl implements HabitService {
         return habitRepository.save(habit);
     }
 
-    public Habit updateHabit(Long id, Boolean completed) {
-        Habit habit = habitRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Habit not found with id: " + id));
-
-        if (completed != null) {
-            habit.setCompleted(completed);
-        }
-
-        return habitRepository.save(habit);
-    }
-
     @Override
     public List<Habit> getAllHabit() {
         return habitRepository.findAll();
     }
 
-    @Scheduled(cron = "0 * * * * *")
+    /*
+    @Scheduled(cron = "0 0 0 * * *")
     public void resetDailyHabits() {
         log.info("Running daily habit reset...");
         List<Habit> habits = getAllHabit();
@@ -50,4 +40,5 @@ public class HabitServiceImpl implements HabitService {
             }
         });
     }
+     */
 }

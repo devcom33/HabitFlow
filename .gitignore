@@ -18,16 +18,23 @@ target/
 *.iws
 *.iml
 *.ipr
+# Backend
+backend/target/
+backend/.mvn/
+backend/.idea/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
 
-### VS Code ###
+# Logs
+*.log
+
+# OS files
+.DS_Store
+
+# IDE
+.idea/
 .vscode/
+

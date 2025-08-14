@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.heymouad.focusapp.enums.Status;
 
 import java.time.LocalDate;
 
@@ -21,7 +20,6 @@ public class Habit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private boolean completed;
     private LocalDate createdAt;
 
     @PrePersist

@@ -23,7 +23,7 @@ public class HabitCompletion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habit_id", nullable = false)
     private Habit habit;
-
+    private boolean completed;
     private LocalDate completionDate;
     private LocalDateTime completionTime = LocalDateTime.now();
 
