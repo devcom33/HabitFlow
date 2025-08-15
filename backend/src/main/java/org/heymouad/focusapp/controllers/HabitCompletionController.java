@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Slf4j
 public class HabitCompletionController {
-    private static HabitCompletionService habitCompletionService;
-
+    private final HabitCompletionService habitCompletionService;
 
     @PatchMapping("/updateHabit/{id}")
     public ResponseEntity<HabitCompletion> updateHabit(@PathVariable Long id, @RequestBody HabitUpdateRequest habitUpdateRequest)
     {
+        log.warn("habit completion status : {}", habitUpdateRequest);
         HabitCompletion updatedHabit = habitCompletionService.updateHabitCompletionStatus(id, habitUpdateRequest.completed());
         return ResponseEntity.ok(updatedHabit);
     }

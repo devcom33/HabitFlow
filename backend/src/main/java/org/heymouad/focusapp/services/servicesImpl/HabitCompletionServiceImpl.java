@@ -6,29 +6,36 @@ import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
+import org.heymouad.focusapp.repositories.HabitRepository;
 import org.heymouad.focusapp.services.HabitCompletionService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class HabitCompletionServiceImpl implements HabitCompletionService {
-    private HabitCompletionRepository habitCompletionRepository;
+    private final HabitCompletionRepository habitCompletionRepository;
+    private final HabitRepository habitRepository;
 
     @Override
     public HabitCompletion saveHabitCompletion(HabitCompletion habitCompletion) {
         return habitCompletionRepository.save(habitCompletion);
     }
 
+    @Override
+    public HabitCompletion updateHabitCompletionStatus(Long habitId, Boolean completed) {
+        Habit habit = habitRepository.findById(habitId)
+                .orElseThrow(() -> new EntityNotFoundException("Habit not found with id: " + habitId));
 
-    public HabitCompletion updateHabitCompletionStatus(Long id, Boolean completed) {
-        HabitCompletion habitCompletion = habitCompletionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Habit not found with id: " + id));
-
-        if (completed != null) {
-            habitCompletion.setCompleted(completed);
-        }
+        HabitCompletion habitCompletion = habitCompletionRepository
+                .findByHabitIdAndCompletionDate(habitId, LocalDate.now())
+                .orElse(HabitCompletion.builder()
+                        .habit(habit)
+                        .completionDate(LocalDate.now())
+                        .build());
 
         return habitCompletionRepository.save(habitCompletion);
     }
