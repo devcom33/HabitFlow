@@ -7,5 +7,4 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface HabitCompletionRepository extends JpaRepository<HabitCompletion, Long> {
-    Optional<HabitCompletion> findByHabitIdAndCompletionDate(Long Id, LocalDate localDate);
 }

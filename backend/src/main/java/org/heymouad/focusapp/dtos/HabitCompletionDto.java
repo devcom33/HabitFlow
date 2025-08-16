@@ -6,4 +6,4 @@ import lombok.Builder;
 
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record HabitDto(String name, Boolean completed){};
+public record HabitCompletionDto(String name){};
