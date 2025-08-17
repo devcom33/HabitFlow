@@ -25,13 +25,9 @@ public class HabitCompletion {
     private Habit habit;
     private boolean completed;
     private LocalDate completionDate;
-    private LocalDateTime completionTime = LocalDateTime.now();
 
     @PrePersist
     protected void onCreate() {
-        if (this.completionTime == null) {
-            this.completionTime = LocalDateTime.now();
-        }
         if (this.completionDate == null) {
             this.completionDate = LocalDate.now();
         }

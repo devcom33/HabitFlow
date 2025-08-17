@@ -10,6 +10,8 @@ import org.heymouad.focusapp.services.HabitCompletionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +27,18 @@ public class HabitCompletionController {
         HabitCompletion saveHabitCompletion = habitCompletionService.saveHabitCompletion(habitCompletion);
 
         return ResponseEntity.ok(saveHabitCompletion);
+    }
+
+    @GetMapping("/HabitsCompletion")
+    public ResponseEntity<List<HabitCompletion>> getHabitsCompletion()
+    {
+        return ResponseEntity.ok(habitCompletionService.getAllHabitsStatus());
+    }
+
+    @GetMapping("/HabitsCompletion/today")
+    public ResponseEntity<List<HabitCompletion>> getHabitsCompletionStatus()
+    {
+        return ResponseEntity.ok(habitCompletionService.getTodayHabitsStatus());
     }
 
     @PatchMapping("/updateHabit/{id}")

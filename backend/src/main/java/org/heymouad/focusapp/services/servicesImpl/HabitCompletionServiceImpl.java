@@ -7,8 +7,12 @@ import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.heymouad.focusapp.services.HabitCompletionService;
+import org.heymouad.focusapp.services.HabitService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 
 
 @Service
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class HabitCompletionServiceImpl implements HabitCompletionService {
     private final HabitCompletionRepository habitCompletionRepository;
+    private final HabitService habitService;
 
     @Override
     public HabitCompletion saveHabitCompletion(HabitCompletion habitCompletion) {
@@ -33,5 +38,28 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
             return habitCompletion;
 
         return habitCompletionRepository.save(habitCompletion);
+    }
+
+    public List<HabitCompletion> getAllHabitsStatus()
+    {
+        return habitCompletionRepository.findAll();
+    }
+
+    public List<HabitCompletion> getTodayHabitsStatus()
+    {
+        return habitCompletionRepository.findHabitCompletionByCompletionDate(LocalDate.now());
+    }
+
+    @Scheduled(cron = "0 25 19 * * *")
+    public void resetDailyHabits() {
+        log.info("Running daily habit reset...");
+        HabitCompletion habitCompletion = new HabitCompletion();
+        List<Habit> habits = habitService.getAllHabit();
+        habits.forEach(habit -> {
+            habitCompletion.setHabit(habit);
+            habitCompletion.setCompletionDate(LocalDate.now());
+            habitCompletion.setCompleted(false);
+            saveHabitCompletion(habitCompletion);
+        });
     }
 }
