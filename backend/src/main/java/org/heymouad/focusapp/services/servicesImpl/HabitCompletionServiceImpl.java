@@ -3,6 +3,8 @@ package org.heymouad.focusapp.services.servicesImpl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.heymouad.focusapp.dtos.HabitCompletionDto;
+import org.heymouad.focusapp.dtos.HabitDto;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
@@ -40,14 +42,31 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
         return habitCompletionRepository.save(habitCompletion);
     }
 
-    public List<HabitCompletion> getAllHabitsStatus()
+    @Override
+    public List<HabitCompletionDto> getAllHabitsStatus()
     {
-        return habitCompletionRepository.findAll();
+        return habitCompletionRepository.findAll().stream()
+                .map(hc -> new HabitCompletionDto(
+                        hc.getId(),
+                        hc.isCompleted(),
+                        hc.getCompletionDate(),
+                        new HabitDto(hc.getHabit().getId(), hc.getHabit().getName())
+                ))
+                .toList();
     }
 
-    public List<HabitCompletion> getTodayHabitsStatus()
+    @Override
+    public List<HabitCompletionDto> getTodayHabitsStatus()
     {
-        return habitCompletionRepository.findHabitCompletionByCompletionDate(LocalDate.now());
+        return habitCompletionRepository.findHabitCompletionByCompletionDate(LocalDate.now())
+                .stream()
+                .map(ths -> new HabitCompletionDto(
+                        ths.getId(),
+                        ths.isCompleted(),
+                        ths.getCompletionDate(),
+                        new HabitDto(ths.getHabit().getId(), ths.getHabit().getName())
+                ))
+                .toList();
     }
 
     @Scheduled(cron = "0 25 19 * * *")

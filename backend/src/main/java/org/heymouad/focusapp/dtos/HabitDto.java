@@ -1,4 +1,4 @@
 package org.heymouad.focusapp.dtos;
 
-public record HabitDto(String name) {
+public record HabitDto(Long id, String name) {
 }

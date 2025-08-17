@@ -30,13 +30,13 @@ public class HabitCompletionController {
     }
 
     @GetMapping("/HabitsCompletion")
-    public ResponseEntity<List<HabitCompletion>> getHabitsCompletion()
+    public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletion()
     {
         return ResponseEntity.ok(habitCompletionService.getAllHabitsStatus());
     }
 
     @GetMapping("/HabitsCompletion/today")
-    public ResponseEntity<List<HabitCompletion>> getHabitsCompletionStatus()
+    public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletionStatus()
     {
         return ResponseEntity.ok(habitCompletionService.getTodayHabitsStatus());
     }
