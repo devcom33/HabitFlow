@@ -90,29 +90,42 @@ git push origin feature/your-feature-name
 
 ## Open a Pull Request
 
-Please open an issue first if you're planning something big — let's discuss before building.
+Before submitting major changes, please [open an issue](https://github.com/devcom33/habitflow/issues) to discuss your idea.  
+We’re happy to collaborate and keep the project direction clear for everyone.
+
+Once you're ready:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m "Describe your feature"`
+4. Push your branch: `git push origin feature/your-feature-name`
+5. Open a Pull Request
+
+---
 
 ## License
 
-MIT License © Devcom33
-Feel free to use, modify, and distribute this app.
+This project is licensed under the MIT License.  
+© [Devcom33](https://github.com/devcom33) — free to use, modify, and distribute.
 
-🌟 Support the Project
+---
 
-If you like HabitFlow:
+## Support the Project
 
-⭐ Star this repo
+If HabitFlow has helped you:
 
-🍴 Fork it to build your own version
+- ⭐ Star this repo to show support
+- 🍴 Fork it to build on top of it
+- 🧑‍💻 Share it with others
+- 💬 Give feedback or request features
 
-🧑‍💻 Share it with other developers
+Let’s improve habit tracking — together.
 
-💬 Give feedback or open feature requests
-
-Let's make habit tracking better together!
+---
 
 ## Contact
 
-Questions? Ideas? Open an issue or reach out on GitHub.
+Have questions, feedback, or ideas?  
+Open an issue or reach out at [github.com/devcom33](https://github.com/devcom33)
 
-Built with 💚 by https://github.com/devcom33
+Built with care by [Devcom33](https://github.com/devcom33)
