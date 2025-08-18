@@ -88,11 +88,11 @@ git commit -m "Add your change"
 git push origin feature/your-feature-name
 ```
 
-# Open a Pull Request
+## Open a Pull Request
 
 Please open an issue first if you're planning something big — let's discuss before building.
 
-# License
+## License
 
 MIT License © Devcom33
 Feel free to use, modify, and distribute this app.
@@ -111,7 +111,7 @@ If you like HabitFlow:
 
 Let's make habit tracking better together!
 
-# Contact
+## Contact
 
 Questions? Ideas? Open an issue or reach out on GitHub.
 
