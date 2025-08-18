@@ -54,6 +54,7 @@ npm run dev
 # 4. Open the app in your browser
 http://localhost:5173
 
+```
 
 ## Features
 
@@ -73,16 +74,20 @@ http://localhost:5173
 Contributions are welcome — whether it's a bug fix, new feature, or even just cleaning up code.
 
 # Fork the project
+
 git clone https://github.com/your-username/habitflow.git
 
 # Create a new feature branch
+
 git checkout -b feature/your-feature-name
 
 # Commit and push
+
 git commit -m "Add your change"
 git push origin feature/your-feature-name
 
 # Open a Pull Request
+
 Please open an issue first if you're planning something big — let's discuss before building.
 
 # License
@@ -109,4 +114,3 @@ Let's make habit tracking better together!
 Questions? Ideas? Open an issue or reach out on GitHub.
 
 Built with 💚 by https://github.com/devcom33
-```
