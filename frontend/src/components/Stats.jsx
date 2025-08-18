@@ -1,10 +1,10 @@
 import React from "react";
 import { TrendingUp } from "lucide-react";
 
-const Stats = ({ habits, habitData }) => {
+const Stats = ({ habitCompletions, habitData }) => {
   const today = new Date().toISOString().split("T")[0];
   const completed = habitData[today] || 0;
-  const total = habits.length;
+  const total = habitCompletions.length;
   const percent = total ? Math.round((completed / total) * 100) : 0;
 
   const calculateStreak = () => {

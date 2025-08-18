@@ -44,7 +44,7 @@ const Dashboard = () => {
           </div>
 
           <div className="space-y-6">
-            <Stats habits={habits} habitData={habitData} />
+            <Stats habitCompletions={habitCompletions} habitData={habitData} />
           </div>
         </div>
 

@@ -7,7 +7,7 @@ const NavBar = () => {
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center space-x-2">
           <Target className="text-blue-400 w-8 h-8" />
-          <h1 className="text-2xl font-bold text-white">HabitKit</h1>
+          <h1 className="text-2xl font-bold text-white">HabitFlow</h1>
         </div>
         <div className="flex items-center space-x-4">
           <button className="text-gray-300 hover:text-white transition-colors">
