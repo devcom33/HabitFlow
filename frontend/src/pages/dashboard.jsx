@@ -8,8 +8,9 @@ import useHabitData from "../hooks/useHabitData";
 const Dashboard = () => {
   const {
     habits,
+    habitCompletions,
     toggleHabit,
-    addHabit,
+    addCompletionHabit,
     habitData,
     loading,
     error,
@@ -48,9 +49,9 @@ const Dashboard = () => {
         </div>
 
         <HabitList
-          habits={habits}
+          habitCompletions={habitCompletions}
           toggleHabit={toggleHabit}
-          addHabit={addHabit}
+          addHabit={addCompletionHabit}
         />
       </div>
     </div>

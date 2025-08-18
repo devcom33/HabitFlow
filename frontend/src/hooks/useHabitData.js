@@ -4,11 +4,13 @@ import {
   getGridHabitsService,
 } from "../services/getHabitsService";
 import { updateHabitService } from "../services/updateHabitService";
+import { getHabitsCompletionsTodayStatus } from "../services/getHabitsCompletionsService";
 
 const useHabitData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [habits, setHabits] = useState([]);
+  const [habitCompletions, setHabitCompletions] = useState([]);
   const [habitData, setHabitData] = useState({});
   const [gridLoading, setGridLoading] = useState(false);
 
@@ -22,6 +24,21 @@ const useHabitData = () => {
     } catch (error) {
       console.error("Error fetching habits:", error);
       setError(error.message || "Failed to fetch habits");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchHabitsCompletionsTodayStatus = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const result = await getHabitsCompletionsTodayStatus();
+      console.log("Fetched Completion habits Status:", result);
+      setHabitCompletions(result || []);
+    } catch (error) {
+      console.error("Error fetching habit Completions:", error);
+      setError(error.message || "Failed to fetch habit Completions");
     } finally {
       setLoading(false);
     }
@@ -42,56 +59,52 @@ const useHabitData = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      await Promise.all([fetchHabits(), fetchGridData()]);
+      await Promise.all([
+        fetchHabits(),
+        fetchGridData(),
+        fetchHabitsCompletionsTodayStatus(),
+      ]);
     };
     loadData();
   }, []);
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
-    const completedCount = habits.filter((h) => h.completed).length;
+    const completedCount = habitCompletions.filter((h) => h?.completed).length;
     setHabitData((prev) => ({
       ...prev,
       [today]: completedCount,
     }));
-  }, [habits]);
+  }, [habitCompletions]);
 
-  const toggleHabit = async (habitId) => {
-    console.log("habit id:", habitId);
+  const toggleHabit = async (completionId) => {
+    setHabitCompletions((prevCompletions) =>
+      prevCompletions.map((completion) => {
+        if (completion.id === completionId) {
+          const updated = { ...completion, completed: !completion.completed };
 
-    setHabits((prevHabits) =>
-      prevHabits.map((habit) => {
-        if (habit.id === habitId) {
-          const updatedHabit = { ...habit, completed: !habit.completed };
-          console.log("habit-completed:", updatedHabit.completed);
-
-          // Call API to update habit
-          updateHabitService(habitId, updatedHabit.completed).catch((error) => {
+          // Calling the API to update habit completed status
+          updateHabitService(completionId, updated.completed).catch((error) => {
             console.error("Failed to update habit:", error);
-            setHabits((prevHabits) =>
-              prevHabits.map((h) =>
-                h.id === habitId
-                  ? { ...h, completed: !updatedHabit.completed }
-                  : h
+            // rollback
+            setHabitCompletions((prev) =>
+              prev.map((c) =>
+                c.id === completionId
+                  ? { ...c, completed: !updated.completed }
+                  : c
               )
             );
           });
-
-          return updatedHabit;
+          console.log("Updated Habit : ", updated);
+          return updated;
         }
-        return habit;
+        return completion;
       })
     );
   };
 
-  const addHabit = (habitName) => {
-    const newHabit = {
-      id: Date.now(),
-      name: habitName,
-      completed: false,
-    };
-
-    setHabits((prevHabits) => [...prevHabits, newHabit]);
+  const addCompletionHabit = (completion) => {
+    setHabitCompletions((prev) => [...prev, completion]);
   };
 
   const refreshGridData = () => {
@@ -100,8 +113,9 @@ const useHabitData = () => {
 
   return {
     habits,
+    habitCompletions,
     toggleHabit,
-    addHabit,
+    addCompletionHabit,
     habitData,
     loading,
     error,

@@ -16,15 +16,15 @@ export const getHabitsService = async () => {
 
 export const getGridHabitsService = async () => {
   try {
-    const response = await axios.get("/api/getHabits");
+    const response = await axios.get("/api/HabitsCompletion");
     const dataGrids = response.data;
 
     // Process the data to create grid data
-    const grids = dataGrids.reduce((acc, habit) => {
-      const date = habit.date || habit.createdAt || habit.completedAt;
+    const grids = dataGrids.reduce((acc, habitStatus) => {
+      const date = habitStatus.completionDate;
       if (date) {
         const dateKey = new Date(date).toISOString().split("T")[0];
-        acc[dateKey] = (acc[dateKey] || 0) + (habit.completed ? 1 : 0);
+        acc[dateKey] = (acc[dateKey] || 0) + (habitStatus.completed ? 1 : 0);
       }
       return acc;
     }, {});

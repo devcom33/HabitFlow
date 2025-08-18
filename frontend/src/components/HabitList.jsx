@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { CheckCircle, Plus } from "lucide-react";
-import { addHabitService } from "../services/addHabitService";
+import {
+  addHabitService,
+  addHabitStatsService,
+} from "../services/addHabitService";
 
-const HabitList = ({ habits, toggleHabit, addHabit }) => {
+const HabitList = ({ habitCompletions, toggleHabit, addHabit }) => {
   const [newHabit, setNewHabit] = useState("");
 
   const handleAddHabit = async () => {
     if (newHabit.trim()) {
-      addHabit(newHabit.trim());
-      await addHabitService(newHabit.trim(), false);
+      const habit = await addHabitService(newHabit.trim());
+      const Completion = await addHabitStatsService(habit.id);
+      addHabit(Completion);
       setNewHabit("");
     }
   };
@@ -20,29 +24,33 @@ const HabitList = ({ habits, toggleHabit, addHabit }) => {
       </h2>
 
       <div className="space-y-3 mb-4">
-        {habits.map((habit) => (
+        {console.log("dispaly Habit Completion : ", habitCompletions)}
+        {habitCompletions?.map((completion) => (
           <div
-            key={habit.id}
+            key={completion.id}
             className={`flex items-center justify-between p-3 rounded-lg ${
-              habit.completed ? "bg-green-900" : "bg-gray-700"
+              completion.completed ? "bg-green-900" : "bg-gray-700"
             }`}
           >
             <span
               className={`${
-                habit.completed ? "text-green-200 line-through" : "text-white"
+                completion.completed
+                  ? "text-green-200 line-through"
+                  : "text-white"
               }`}
             >
-              {habit.name}
+              {completion.habit.name}
             </span>
             <button
-              onClick={() => toggleHabit(habit.id)}
+              onClick={() => toggleHabit(completion.id)}
               className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                habit.completed
+                completion.completed
                   ? "bg-green-500 border-green-500"
                   : "border-gray-400 hover:border-green-400"
               }`}
             >
-              {habit.completed && (
+              {console.log("toggle : ", completion)}
+              {completion.completed && (
                 <CheckCircle className="w-4 h-4 text-white" />
               )}
             </button>
@@ -54,7 +62,7 @@ const HabitList = ({ habits, toggleHabit, addHabit }) => {
         <input
           value={newHabit}
           onChange={(e) => setNewHabit(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && handleAddHabit()}
+          onKeyDown={(e) => e.key === "Enter" && handleAddHabit()}
           type="text"
           placeholder="Add a new habit..."
           className="flex-1 bg-gray-700 text-white px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
