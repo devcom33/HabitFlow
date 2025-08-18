@@ -1,18 +1,59 @@
 # HabitFlow — Track. Improve. Transform.
 
-A clean, full-stack, open-source app to build consistent habits — with a **GitHub-style progress grid**, daily streaks, and beautiful stats.
+**HabitFlow** is a full-stack, open-source habit tracker designed for developers who appreciate clean UIs, meaningful data, and the occasional green square.
 
-## Overview
-
-**HabitFlow** is your personal companion for mastering habits and tracking progress — inspired by GitHub’s contribution grid. Whether you're building a new routine or breaking an old one, HabitFlow helps you stay motivated and accountable.
-
-Built using:
-
-- ⚛️ **React** + Tailwind CSS (Frontend)
-- 🧰 **Spring Boot** (Backend)
-- 🐘 **PostgreSQL** (Database)
+Inspired by GitHub’s contribution graph, HabitFlow helps you build daily routines and stick with them — without the bloat.
 
 ---
+
+## What it does
+
+- Visualizes daily habit completion using a contribution-style grid
+- Tracks multiple habits with daily toggles
+- Displays real-time stats including streaks and completion rate
+- Built with modern, scalable technologies
+
+---
+
+## Tech Stack
+
+- **Frontend:** React + Tailwind CSS
+- **Backend:** Spring Boot 3.5 (REST API)
+- **Database:** PostgreSQL (via Docker)
+- **Extras:** MapStruct, Spring Security, OpenAPI, Lucide Icons
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18+)
+- Java 17
+- Docker + Docker Compose
+
+---
+
+### Run the App
+
+You can run the full stack with a few simple commands.
+
+```bash
+# 1. Start database and Admire UI with Docker
+docker-compose up -d
+
+# 2. Start the backend (Spring Boot)
+cd backend
+./mvnw spring-boot:run
+
+# 3. Start the frontend (Vite + React)
+cd ../frontend
+npm install
+npm run dev
+
+# 4. Open the app in your browser
+http://localhost:5173
+
 
 ## Features
 
@@ -27,25 +68,24 @@ Built using:
 
 ![Screenshot](./frontend/public/habitflow.png)
 
-🤝 Contributing
+# Contributing
 
-We love contributors! 💙 Whether you want to fix a bug, improve performance, or add a new feature, we welcome all contributions.
+Contributions are welcome — whether it's a bug fix, new feature, or even just cleaning up code.
 
-🧩 How to Contribute
+# Fork the project
+git clone https://github.com/your-username/habitflow.git
 
-Fork the project
+# Create a new feature branch
+git checkout -b feature/your-feature-name
 
-Create a new branch: git checkout -b feature/amazing-feature
+# Commit and push
+git commit -m "Add your change"
+git push origin feature/your-feature-name
 
-Commit your changes: git commit -m 'Add amazing feature'
+# Open a Pull Request
+Please open an issue first if you're planning something big — let's discuss before building.
 
-Push to the branch: git push origin feature/amazing-feature
-
-Open a Pull Request
-
-Check issues to get started.
-
-📄 License
+# License
 
 MIT License © Devcom33
 Feel free to use, modify, and distribute this app.
@@ -64,8 +104,9 @@ If you like HabitFlow:
 
 Let's make habit tracking better together!
 
-📬 Contact
+# Contact
 
 Questions? Ideas? Open an issue or reach out on GitHub.
 
-Built with 💚 by Devcom33
+Built with 💚 by https://github.com/devcom33
+```
