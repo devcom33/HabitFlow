@@ -69,10 +69,11 @@ http://localhost:5173
 
 ![Screenshot](./frontend/public/habitflow.png)
 
-# Contributing
+## Contributing
 
 Contributions are welcome — whether it's a bug fix, new feature, or even just cleaning up code.
 
+```bash
 # Fork the project
 
 git clone https://github.com/your-username/habitflow.git
@@ -85,6 +86,7 @@ git checkout -b feature/your-feature-name
 
 git commit -m "Add your change"
 git push origin feature/your-feature-name
+```
 
 # Open a Pull Request
 
