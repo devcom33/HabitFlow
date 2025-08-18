@@ -42,9 +42,10 @@ public class HabitCompletionController {
     }
 
     @PatchMapping("/updateHabit/{id}")
-    public ResponseEntity<HabitCompletion> updateHabit(@PathVariable Long id, @RequestBody HabitUpdateRequest habitUpdateRequest)
+    public ResponseEntity<HabitCompletionDto> updateHabit(@PathVariable Long id, @RequestBody HabitUpdateRequest habitUpdateRequest)
     {
-        HabitCompletion updatedHabit = habitCompletionService.updateHabitCompletionStatus(id, habitUpdateRequest.completed());
-        return ResponseEntity.ok(updatedHabit);
+        HabitCompletion updatedHabitCompletion = habitCompletionService.updateHabitCompletionStatus(id, habitUpdateRequest.completed());
+        HabitCompletionDto habitCompletionDto = habitCompletionMapper.toHabitCompletionDto(updatedHabitCompletion);
+        return ResponseEntity.ok(habitCompletionDto);
     }
 }

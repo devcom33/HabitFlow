@@ -35,9 +35,9 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
                 .orElseThrow(() -> new EntityNotFoundException("HabitCompletion not found with id: " + habitCompletionId));
 
         if (habitCompletion != null)
-            habitCompletion.setCompleted(!completed);
+            habitCompletion.setCompleted(completed);
         else
-            return habitCompletion;
+            return null;
 
         return habitCompletionRepository.save(habitCompletion);
     }
@@ -69,16 +69,19 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
                 .toList();
     }
 
-    @Scheduled(cron = "0 25 19 * * *")
+    @Scheduled(cron = "0 18 1 * * *")
     public void resetDailyHabits() {
         log.info("Running daily habit reset...");
-        HabitCompletion habitCompletion = new HabitCompletion();
         List<Habit> habits = habitService.getAllHabit();
         habits.forEach(habit -> {
-            habitCompletion.setHabit(habit);
-            habitCompletion.setCompletionDate(LocalDate.now());
-            habitCompletion.setCompleted(false);
-            saveHabitCompletion(habitCompletion);
+            boolean exists = habitCompletionRepository.existsByHabitAndCompletionDate(habit, LocalDate.now());
+            if (!exists) {
+                HabitCompletion habitCompletion = new HabitCompletion();
+                habitCompletion.setHabit(habit);
+                habitCompletion.setCompletionDate(LocalDate.now());
+                habitCompletion.setCompleted(false);
+                saveHabitCompletion(habitCompletion);
+            }
         });
     }
 }

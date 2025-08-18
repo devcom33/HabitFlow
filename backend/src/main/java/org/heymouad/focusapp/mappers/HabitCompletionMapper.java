@@ -8,4 +8,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface HabitCompletionMapper {
     HabitCompletion toHabitCompletion(HabitCompletionDto habitCompletionDto);
+    HabitCompletionDto toHabitCompletionDto(HabitCompletion habitCompletion);
 }
