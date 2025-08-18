@@ -30,14 +30,6 @@ public class HabitController {
     {
         Habit savedHabit = habitService.saveHabit(habitMapper.toHabit(habitRequestDto));
 
-        habitCompletionService.saveHabitCompletion(
-                HabitCompletion.builder()
-                        .habit(savedHabit)
-                        .completionDate(LocalDate.now())
-                        .completed(false)
-                        .build()
-        );
-
         return ResponseEntity.ok(savedHabit);
     }
 

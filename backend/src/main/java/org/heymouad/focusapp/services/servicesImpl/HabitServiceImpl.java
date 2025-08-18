@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +26,11 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public List<Habit> getAllHabit() {
         return habitRepository.findAll();
+    }
+
+    @Override
+    public Optional<Habit> getById(Long habitId) {
+        return habitRepository.findById(habitId);
     }
 
     /*

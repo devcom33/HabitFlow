@@ -2,6 +2,7 @@ package org.heymouad.focusapp.mappers;
 
 
 import org.heymouad.focusapp.dtos.HabitCompletionDto;
+import org.heymouad.focusapp.dtos.HabitCompletionRequest;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.mapstruct.Mapper;
 
@@ -9,4 +10,5 @@ import org.mapstruct.Mapper;
 public interface HabitCompletionMapper {
     HabitCompletion toHabitCompletion(HabitCompletionDto habitCompletionDto);
     HabitCompletionDto toHabitCompletionDto(HabitCompletion habitCompletion);
+    HabitCompletion toHabitCompletionRequest(HabitCompletionRequest habitCompletionRequest);
 }

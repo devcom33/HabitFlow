@@ -69,7 +69,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
                 .toList();
     }
 
-    @Scheduled(cron = "0 18 1 * * *")
+    @Scheduled(cron = "0 56 15 * * *")
     public void resetDailyHabits() {
         log.info("Running daily habit reset...");
         List<Habit> habits = habitService.getAllHabit();
