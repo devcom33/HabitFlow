@@ -6,6 +6,7 @@ import org.heymouad.focusapp.dtos.HabitDto;
 import org.heymouad.focusapp.dtos.HabitUpdateRequest;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
+import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.mappers.HabitMapper;
 import org.heymouad.focusapp.repositories.HabitRepository;
 import org.heymouad.focusapp.services.HabitCompletionService;
@@ -26,16 +27,14 @@ public class HabitController {
     private final HabitMapper habitMapper;
 
     @PostMapping("/addHabit")
-    public ResponseEntity<Habit> saveHabit(@RequestBody HabitDto habitRequestDto)
-    {
+    public ResponseEntity<Habit> saveHabit(@RequestBody HabitDto habitRequestDto) throws HabitServiceException {
         Habit savedHabit = habitService.saveHabit(habitMapper.toHabit(habitRequestDto));
 
         return ResponseEntity.ok(savedHabit);
     }
 
     @GetMapping("/getHabits")
-    public ResponseEntity<List<Habit>> getAllHabits()
-    {
+    public ResponseEntity<List<Habit>> getAllHabits() throws HabitServiceException {
         List<Habit> habitList = habitService.getAllHabits();
 
         return ResponseEntity.ok(habitList);
