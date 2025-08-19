@@ -90,42 +90,41 @@ git push origin feature/your-feature-name
 
 ## Open a Pull Request
 
-Before submitting major changes, please [open an issue](https://github.com/devcom33/habitflow/issues) to discuss your idea.  
-We’re happy to collaborate and keep the project direction clear for everyone.
+Before implementing major changes, please open an issue to discuss your idea and ensure we're aligned.
 
-Once you're ready:
+When you're ready to contribute:
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m "Describe your feature"`
-4. Push your branch: `git push origin feature/your-feature-name`
+2. Create a branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m "Add brief, descriptive message"`
+4. Push to your fork: `git push origin feature/your-feature-name`
 5. Open a Pull Request
 
 ---
 
 ## License
 
-This project is licensed under the MIT License.  
-© [Devcom33](https://github.com/devcom33) — free to use, modify, and distribute.
+This project is released under the MIT License.  
+© [Devcom33](https://github.com/devcom33). Feel free to use, modify, and distribute.
 
 ---
 
 ## Support the Project
 
-If HabitFlow has helped you:
+If HabitFlow has added value to your routine:
 
-- ⭐ Star this repo to show support
-- 🍴 Fork it to build on top of it
-- 🧑‍💻 Share it with others
-- 💬 Give feedback or request features
+- Star the repo to show your support
+- Fork it to make your own modifications
+- Share it with developers who might benefit
+- Provide feedback or suggest enhancements via issues
 
-Let’s improve habit tracking — together.
+Your engagement helps make HabitFlow better.
 
 ---
 
 ## Contact
 
-Have questions, feedback, or ideas?  
-Open an issue or reach out at [github.com/devcom33](https://github.com/devcom33)
+Got a question or a suggestion?  
+Open an issue or reach out through GitHub: [devcom33](https://github.com/devcom33)
 
-Built with care by [Devcom33](https://github.com/devcom33)
+Crafted with care by [Devcom33](https://github.com/devcom33)
