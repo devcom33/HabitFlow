@@ -36,7 +36,7 @@ public class HabitController {
     @GetMapping("/getHabits")
     public ResponseEntity<List<Habit>> getAllHabits()
     {
-        List<Habit> habitList = habitService.getAllHabit();
+        List<Habit> habitList = habitService.getAllHabits();
 
         return ResponseEntity.ok(habitList);
     }

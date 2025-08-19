@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface HabitService {
     Habit saveHabit(Habit habit);
-    List<Habit> getAllHabit();
+    List<Habit> getAllHabits();
 
     Optional<Habit> getById(Long habitId);
 }
