@@ -5,6 +5,7 @@ const HabitGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   const today = new Date();
   const startDate = new Date(today.getFullYear(), 0, 1);
 
+  console.log("Habit Data : ", habitData);
   const getDayIntensity = (date) => {
     const dateKey = date.toISOString().split("T")[0];
     const count = habitData[dateKey] || 0;

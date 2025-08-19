@@ -77,6 +77,8 @@ const useHabitData = () => {
     }));
   }, [habitCompletions]);
 
+  console.log("habit data new : ", habitData);
+
   const toggleHabit = async (completionId) => {
     setHabitCompletions((prevCompletions) =>
       prevCompletions.map((completion) => {
