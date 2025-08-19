@@ -1,7 +1,7 @@
 package org.heymouad.focusapp.services.servicesImpl;
 
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.dtos.HabitCompletionDto;
 import org.heymouad.focusapp.dtos.HabitDto;
@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class HabitCompletionServiceImpl implements HabitCompletionService {
     private final HabitCompletionRepository habitCompletionRepository;
@@ -69,10 +69,10 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
                 .toList();
     }
 
-    @Scheduled(cron = "0 56 15 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void resetDailyHabits() {
         log.info("Running daily habit reset...");
-        List<Habit> habits = habitService.getAllHabit();
+        List<Habit> habits = habitService.getAllHabits();
         habits.forEach(habit -> {
             boolean exists = habitCompletionRepository.existsByHabitAndCompletionDate(habit, LocalDate.now());
             if (!exists) {

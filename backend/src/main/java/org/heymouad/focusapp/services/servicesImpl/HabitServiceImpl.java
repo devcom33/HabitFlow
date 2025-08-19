@@ -1,30 +1,31 @@
 package org.heymouad.focusapp.services.servicesImpl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.repositories.HabitRepository;
 import org.heymouad.focusapp.services.HabitService;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class HabitServiceImpl implements HabitService {
     private final HabitRepository habitRepository;
 
     @Override
+    @Transactional
     public Habit saveHabit(Habit habit) {
         return habitRepository.save(habit);
     }
 
     @Override
-    public List<Habit> getAllHabit() {
+    public List<Habit> getAllHabits() {
         return habitRepository.findAll();
     }
 
@@ -33,18 +34,4 @@ public class HabitServiceImpl implements HabitService {
         return habitRepository.findById(habitId);
     }
 
-    /*
-    @Scheduled(cron = "0 0 0 * * *")
-    public void resetDailyHabits() {
-        log.info("Running daily habit reset...");
-        List<Habit> habits = getAllHabit();
-        habits.forEach(habit -> {
-            if (habit.isCompleted())
-            {
-                habit.setCompleted(false);
-                habitRepository.save(habit);
-            }
-        });
-    }
-     */
 }
