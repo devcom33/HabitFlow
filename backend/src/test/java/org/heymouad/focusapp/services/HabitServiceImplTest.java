@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -154,5 +156,18 @@ class HabitServiceImplTest {
                 .isEqualTo("Exercise");
 
         verify(habitRepository, times(1)).findById(validId);
+    }
+
+    @ParameterizedTest
+    @DisplayName("should throw IllegalArgumentException for invalid Ids")
+    @ValueSource(longs = {0L, -1L, -100L})
+    @NullSource
+    void shouldThrowExceptionForInvalidIds(Long invalidId)
+    {
+        assertThatThrownBy(() -> habitService.getById(invalidId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Habit ID must be a positive number");
+
+        verify(habitRepository, never()).findById(any());
     }
 }

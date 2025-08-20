@@ -50,7 +50,7 @@ public class HabitServiceImpl implements HabitService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Habit> getById(Long habitId) throws HabitServiceException {
-        if (habitId == null || habitId < 0)
+        if (habitId == null || habitId <= 0)
         {
             throw new IllegalArgumentException("Habit ID must be a positive number");
         }
