@@ -104,8 +104,12 @@ When you're ready to contribute:
 
 ## License
 
-This project is released under the MIT License.  
-© [Devcom33](https://github.com/devcom33). Feel free to use, modify, and distribute.
+This project is released under the [MIT License](LICENSE).  
+© [Devcom33](https://github.com/devcom33)
+
+## Attribution
+
+If you use **HabitFlow** in your own project or share it publicly, a link back to this repository or a mention of [@devcom33](https://github.com/devcom33) is appreciated!
 
 ---
 
