@@ -18,6 +18,7 @@ import org.springframework.dao.DataAccessException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -106,6 +107,7 @@ class HabitServiceImplTest {
         );
     }
 
+    //Test getAllHabits
     @Test
     @DisplayName("Should return all habits when data exists")
     void shouldReturnAllHabits() throws HabitServiceException {
@@ -123,4 +125,34 @@ class HabitServiceImplTest {
         verify(habitRepository, times(1)).findAll();
     }
 
+    @Test
+    @DisplayName("should throw HabitServiceException when habitRepository failed")
+    void shouldThrowHabitServiceExceptionWhenGetAllHabitsFails() throws HabitServiceException{
+        when(habitRepository.findAll())
+                .thenThrow(new DataAccessException("Database connection failed") {});
+
+        assertThatThrownBy(() -> habitService.getAllHabits())
+                .isInstanceOf(HabitServiceException.class)
+                .hasMessage("Failed to retrieve habits")
+                .hasCauseInstanceOf(DataAccessException.class);
+
+        verify(habitRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("should return Habit when found valid Id successfully")
+    void shouldGetHabitIdSuccessfully() throws HabitServiceException{
+        Long validId = 1L;
+        when(habitRepository.findById(validId)).thenReturn(Optional.of(validHabit));
+
+        Optional<Habit> result = habitService.getById(validId);
+
+        assertThat(result)
+                .isPresent()
+                .get()
+                .extracting(Habit::getName)
+                .isEqualTo("Exercise");
+
+        verify(habitRepository, times(1)).findById(validId);
+    }
 }
