@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,7 +20,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -30,69 +36,94 @@ class HabitServiceImplTest {
     @InjectMocks
     private HabitServiceImpl habitService;
 
-    private Habit sampleHabit;
+    private Habit validHabit, anotherHabit;
 
     @BeforeEach
     void setUp() {
-        sampleHabit = new Habit();
-        sampleHabit.setId(1L);
-        sampleHabit.setName("Exercise");
+        validHabit = createHabit(1L, "Exercise");
+        anotherHabit = createHabit(2L, "Read");
     }
 
+    Habit createHabit(Long id, String name)
+    {
+        Habit habit = new Habit();
+        habit.setId(id);
+        habit.setName(name);
+
+        return habit;
+    }
     // ---------- saveHabit Tests ----------
 
     @Test
     @DisplayName("Should save habit successfully")
     void shouldSaveHabitSuccessfully() throws HabitServiceException {
-        when(habitRepository.save(sampleHabit)).thenReturn(sampleHabit);
+        when(habitRepository.save(validHabit)).thenReturn(validHabit);
 
-        Habit savedHabit = habitService.saveHabit(sampleHabit);
+        Habit savedHabit = habitService.saveHabit(validHabit);
 
-        assertNotNull(savedHabit);
-        assertEquals(1L, savedHabit.getId());
-        assertEquals("Exercise", savedHabit.getName());
-        verify(habitRepository, times(1)).save(sampleHabit);
+        assertThat(savedHabit)
+                .isNotNull()
+                        .extracting(Habit::getId, Habit::getName)
+                                .containsExactly(1L, "Exercise");
+
+        verify(habitRepository, times(1)).save(validHabit);
     }
 
     @Test
-    @DisplayName("Should throw exception when saveHabit fails")
-    void shouldThrowExceptionWhenSaveFails() {
-        when(habitRepository.save(any())).thenThrow(new DataAccessException("DB error") {});
+    @DisplayName("Should throw HabitServiceException when repository fails")
+    void shouldThrowHabitServiceExceptionWhenRepositoryFails() {
+        when(habitRepository.save(any(Habit.class)))
+                .thenThrow(new DataAccessException("Database connection failed") {});
 
-        assertThrows(DataAccessException.class, () -> habitService.saveHabit(sampleHabit));
-        verify(habitRepository).save(sampleHabit);
+        assertThatThrownBy(() -> habitService.saveHabit(validHabit))
+                .isInstanceOf(HabitServiceException.class)
+                .hasMessage("Failed to save Habit.")
+                .hasCauseInstanceOf(DataAccessException.class);
+
+        verify(habitRepository).save(validHabit);
     }
 
     @Test
-    @DisplayName("Should save null habit gracefully (if allowed by repo)")
-    void shouldSaveNullHabitGracefully() throws HabitServiceException {
-        when(habitRepository.save(null)).thenReturn(null);
+    @DisplayName("Should throw IllegalArgumentException when habit is null")
+    void shouldThrowIllegalArgumentExceptionWhenHabitIsNull() throws HabitServiceException {
+        assertThatThrownBy(() -> habitService.saveHabit(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Habit cannot be null");
 
-        Habit result = habitService.saveHabit(null);
-
-        assertNull(result);
-        verify(habitRepository).save(null);
+        verify(habitRepository, never()).save(any());
     }
 
-    // ---------- getAllHabit Tests ----------
+    @ParameterizedTest
+    @DisplayName("Should reject invalid habits")
+    @MethodSource("invalidHabits")
+    void shouldRejectInvalidHabits(Habit invalidHabit, String testCase) {
+        // When & Then
+        assertThatThrownBy(() -> habitService.saveHabit(invalidHabit))
+                .isInstanceOf(IllegalArgumentException.class)
+                .withFailMessage("Failed for test case: " + testCase);
+    }
+
+    static Stream<Arguments> invalidHabits() {
+        return Stream.of(
+                Arguments.of(null, "null habit")
+        );
+    }
 
     @Test
     @DisplayName("Should return all habits when data exists")
     void shouldReturnAllHabits() throws HabitServiceException {
-        Habit anotherHabit = new Habit();
-        anotherHabit.setId(2L);
-        anotherHabit.setName("Read");
+        List<Habit> expectedHabits = Arrays.asList(validHabit, anotherHabit);
+        when(habitRepository.findAll()).thenReturn(expectedHabits);
 
-        List<Habit> mockHabits = Arrays.asList(sampleHabit, anotherHabit);
-        when(habitRepository.findAll()).thenReturn(mockHabits);
+        List<Habit> actualHabits = habitService.getAllHabits();
 
-        List<Habit> result = habitService.getAllHabits();
+        assertThat(actualHabits)
+                .isNotNull()
+                .hasSize(2)
+                .extracting(Habit::getName)
+                .containsExactly("Exercise", "Read");
 
-        assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals("Exercise", result.get(0).getName());
-        assertEquals("Read", result.get(1).getName());
-        verify(habitRepository).findAll();
+        verify(habitRepository, times(1)).findAll();
     }
 
     @Test
@@ -112,7 +143,7 @@ class HabitServiceImplTest {
     @Test
     @DisplayName("Should return habit when found by ID")
     void shouldReturnHabitByIdWhenFound() throws HabitServiceException {
-        when(habitRepository.findById(1L)).thenReturn(Optional.of(sampleHabit));
+        when(habitRepository.findById(1L)).thenReturn(Optional.of(validHabit));
 
         Optional<Habit> result = habitService.getById(1L);
 
