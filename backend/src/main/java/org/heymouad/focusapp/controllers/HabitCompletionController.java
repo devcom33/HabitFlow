@@ -7,6 +7,7 @@ import org.heymouad.focusapp.dtos.HabitCompletionRequest;
 import org.heymouad.focusapp.dtos.HabitUpdateRequest;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
+import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.mappers.HabitCompletionMapper;
 import org.heymouad.focusapp.services.HabitCompletionService;
 import org.heymouad.focusapp.services.HabitService;
@@ -28,7 +29,7 @@ public class HabitCompletionController {
     @PostMapping("/habits/{habitId}/completions")
     public ResponseEntity<HabitCompletion> saveHabitCompletion(
             @PathVariable Long habitId
-    ) {
+    ) throws HabitServiceException {
         Habit habit = habitService.getById(habitId)
                 .orElseThrow(() -> new RuntimeException("Habit not found"));
 

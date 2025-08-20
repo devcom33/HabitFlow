@@ -24,14 +24,14 @@ public class HabitServiceImpl implements HabitService {
     @Transactional
     public Habit saveHabit(Habit habit) throws HabitServiceException {
         if (habit == null) {
-            throw new IllegalStateException("Habit cannot be null.");
+            throw new IllegalArgumentException("Habit cannot be null");
         }
         try {
             Habit savedHabit = habitRepository.save(habit);
             return savedHabit;
         } catch (DataAccessException e)
         {
-            throw new HabitServiceException("Failed to save Habit.");
+            throw new HabitServiceException("Failed to save Habit", e);
         }
     }
 

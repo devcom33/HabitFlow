@@ -7,6 +7,7 @@ import org.heymouad.focusapp.dtos.HabitCompletionDto;
 import org.heymouad.focusapp.dtos.HabitDto;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
+import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.heymouad.focusapp.services.HabitCompletionService;
 import org.heymouad.focusapp.services.HabitService;
@@ -70,7 +71,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
     }
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void resetDailyHabits() {
+    public void resetDailyHabits() throws HabitServiceException {
         log.info("Running daily habit reset...");
         List<Habit> habits = habitService.getAllHabits();
         habits.forEach(habit -> {
