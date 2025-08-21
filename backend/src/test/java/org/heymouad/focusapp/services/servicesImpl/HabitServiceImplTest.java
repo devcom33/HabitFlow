@@ -1,9 +1,8 @@
-package org.heymouad.focusapp.services;
+package org.heymouad.focusapp.services.servicesImpl;
 
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.repositories.HabitRepository;
-import org.heymouad.focusapp.services.servicesImpl.HabitServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -169,5 +168,19 @@ class HabitServiceImplTest {
                 .hasMessage("Habit ID must be a positive number");
 
         verify(habitRepository, never()).findById(any());
+    }
+
+    @Test
+    @DisplayName("Should throw HabitServiceException when repository fails to find by ID")
+    void shouldThrowExceptionWhenRepositoryFailsToFindById() {
+        Long validId = 1L;
+        when(habitRepository.findById(validId))
+                .thenThrow(new DataAccessException("Database connection lost") {});
+
+        assertThatThrownBy(() -> habitService.getById(validId))
+                .isInstanceOf(HabitServiceException.class)
+                .hasMessage("Failed to retrieve habit");
+
+        verify(habitRepository).findById(validId);
     }
 }

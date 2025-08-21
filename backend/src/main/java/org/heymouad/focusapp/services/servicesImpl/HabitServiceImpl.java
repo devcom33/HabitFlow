@@ -1,6 +1,5 @@
 package org.heymouad.focusapp.services.servicesImpl;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.entities.Habit;
