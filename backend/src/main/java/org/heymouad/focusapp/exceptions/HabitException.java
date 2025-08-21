@@ -1,6 +1,6 @@
 package org.heymouad.focusapp.exceptions;
 
-public abstract class HabitException extends Exception {
+public abstract class HabitException extends RuntimeException {
     public HabitException(String message) {
         super(message);
     }

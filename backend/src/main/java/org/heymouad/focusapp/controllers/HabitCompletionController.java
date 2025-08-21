@@ -3,10 +3,11 @@ package org.heymouad.focusapp.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.dtos.HabitCompletionDto;
-import org.heymouad.focusapp.dtos.HabitCompletionRequest;
 import org.heymouad.focusapp.dtos.HabitUpdateRequest;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
+import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
+import org.heymouad.focusapp.exceptions.HabitCompletionServiceException;
 import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.mappers.HabitCompletionMapper;
 import org.heymouad.focusapp.services.HabitCompletionService;
@@ -29,7 +30,7 @@ public class HabitCompletionController {
     @PostMapping("/habits/{habitId}/completions")
     public ResponseEntity<HabitCompletion> saveHabitCompletion(
             @PathVariable Long habitId
-    ) throws HabitServiceException {
+    ) throws HabitServiceException, HabitCompletionServiceException {
         Habit habit = habitService.getById(habitId)
                 .orElseThrow(() -> new RuntimeException("Habit not found"));
 
@@ -45,20 +46,17 @@ public class HabitCompletionController {
 
 
     @GetMapping("/HabitsCompletion")
-    public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletion()
-    {
+    public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletion() throws HabitCompletionServiceException {
         return ResponseEntity.ok(habitCompletionService.getAllHabitsStatus());
     }
 
     @GetMapping("/HabitsCompletion/today")
-    public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletionStatus()
-    {
+    public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletionStatus() throws HabitCompletionServiceException {
         return ResponseEntity.ok(habitCompletionService.getTodayHabitsStatus());
     }
 
     @PatchMapping("/completions/{id}")
-    public ResponseEntity<HabitCompletionDto> updateHabit(@PathVariable Long id, @RequestBody HabitUpdateRequest habitUpdateRequest)
-    {
+    public ResponseEntity<HabitCompletionDto> updateHabit(@PathVariable Long id, @RequestBody HabitUpdateRequest habitUpdateRequest) throws HabitCompletionServiceException, HabitCompletionDataException {
         HabitCompletion updatedHabitCompletion = habitCompletionService.updateHabitCompletionStatus(id, habitUpdateRequest.completed());
         HabitCompletionDto habitCompletionDto = habitCompletionMapper.toHabitCompletionDto(updatedHabitCompletion);
         return ResponseEntity.ok(habitCompletionDto);

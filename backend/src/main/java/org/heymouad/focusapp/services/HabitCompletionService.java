@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface HabitCompletionService {
     HabitCompletion saveHabitCompletion(HabitCompletion habitCompletion) throws HabitCompletionServiceException;
-    List<HabitCompletionDto> getAllHabitsStatus() throws HabitCompletionServiceException;
-    List<HabitCompletionDto> getTodayHabitsStatus() throws HabitCompletionServiceException;
-    HabitCompletion updateHabitCompletionStatus(Long id, Boolean completed) throws HabitCompletionServiceException, HabitCompletionDataException;
+    List<HabitCompletionDto> getAllHabitsStatus();
+    List<HabitCompletionDto> getTodayHabitsStatus();
+    HabitCompletion updateHabitCompletionStatus(Long id, Boolean completed);
 }

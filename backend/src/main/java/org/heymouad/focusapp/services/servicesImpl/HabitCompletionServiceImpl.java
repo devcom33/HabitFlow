@@ -32,7 +32,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
 
     @Override
     @Transactional
-    public HabitCompletion saveHabitCompletion(HabitCompletion habitCompletion) throws HabitCompletionServiceException {
+    public HabitCompletion saveHabitCompletion(HabitCompletion habitCompletion) {
         if (habitCompletion == null) {
             throw new IllegalArgumentException("HabitCompletion cannot be null");
         }
@@ -48,7 +48,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
 
     @Override
     @Transactional
-    public HabitCompletion updateHabitCompletionStatus(Long habitCompletionId, Boolean completed) throws HabitCompletionDataException {
+    public HabitCompletion updateHabitCompletionStatus(Long habitCompletionId, Boolean completed) {
         if (habitCompletionId == null || habitCompletionId < 0) {
             throw new IllegalArgumentException("HabitCompletion Id must be a positive number");
         }
@@ -73,7 +73,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<HabitCompletionDto> getAllHabitsStatus() throws HabitCompletionServiceException {
+    public List<HabitCompletionDto> getAllHabitsStatus() {
         try {
 
             return habitCompletionRepository.findAll().stream()
@@ -92,7 +92,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<HabitCompletionDto> getTodayHabitsStatus() throws HabitCompletionServiceException {
+    public List<HabitCompletionDto> getTodayHabitsStatus() {
         try {
 
             return habitCompletionRepository.findHabitCompletionByCompletionDate(LocalDate.now())
@@ -111,7 +111,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
     }
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void resetDailyHabits() throws HabitServiceException {
+    public void resetDailyHabits() {
         log.info("Running daily habit reset...");
         List<Habit> habits = habitService.getAllHabits();
         habits.forEach(habit -> {
