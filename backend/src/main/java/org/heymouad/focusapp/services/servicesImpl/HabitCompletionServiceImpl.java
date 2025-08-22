@@ -49,12 +49,10 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
     @Override
     @Transactional
     public HabitCompletion updateHabitCompletionStatus(Long habitCompletionId, Boolean completed) {
-        if (habitCompletionId == null || habitCompletionId < 0) {
+        if (habitCompletionId == null || habitCompletionId <= 0) {
             throw new IllegalArgumentException("HabitCompletion Id must be a positive number");
         }
         try {
-            log.debug("Updating habit completion status for ID: {}", habitCompletionId);
-
             HabitCompletion habitCompletion = habitCompletionRepository.findById(habitCompletionId)
                     .orElseThrow(() -> new HabitCompletionNotFoundException( String.format("Habit completion with ID %d not found", habitCompletionId)));
 

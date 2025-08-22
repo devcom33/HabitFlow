@@ -51,7 +51,6 @@ class HabitServiceImplTest {
 
         return habit;
     }
-    // ---------- saveHabit Tests ----------
 
     @Test
     @DisplayName("Should save habit successfully")
