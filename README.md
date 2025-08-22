@@ -102,6 +102,13 @@ When you're ready to contribute:
 
 ---
 
+## Roadmap
+
+- [ ] Add JWT-based authentication
+- [ ] Multi-user support
+- [ ] Weekly/monthly reporting
+- [ ] Public profile sharing
+
 ## License
 
 This project is released under the [MIT License](LICENSE).  
