@@ -1,5 +1,18 @@
 # HabitFlow — Track. Improve. Transform.
 
+![GitHub Repo stars](https://img.shields.io/github/stars/devcom33/habitflow?style=social)
+![GitHub forks](https://img.shields.io/github/forks/devcom33/habitflow?style=social)
+![GitHub issues](https://img.shields.io/github/issues/devcom33/habitflow)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/devcom33/habitflow)
+![GitHub contributors](https://img.shields.io/github/contributors/devcom33/habitflow)
+![License](https://img.shields.io/github/license/devcom33/habitflow)
+
+![React](https://img.shields.io/badge/Frontend-React-blue?logo=react)
+![Tailwind CSS](https://img.shields.io/badge/Style-Tailwind_CSS-38B2AC?logo=tailwindcss)
+![Spring Boot](https://img.shields.io/badge/Backend-Spring%20Boot-6DB33F?logo=springboot)
+![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-4169E1?logo=postgresql)
+![Docker](https://img.shields.io/badge/Container-Docker-2496ED?logo=docker)
+
 **HabitFlow** is a full-stack, open-source habit tracker designed for developers who appreciate clean UIs, meaningful data, and the occasional green square.
 
 Inspired by GitHub’s contribution graph, HabitFlow helps you build daily routines and stick with them — without the bloat.
