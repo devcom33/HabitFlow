@@ -1,5 +1,6 @@
 package org.heymouad.focusapp.services.servicesImpl;
 
+import org.heymouad.focusapp.dtos.HabitCompletionDto;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
@@ -18,10 +19,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataAccessException;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -182,4 +185,45 @@ class HabitCompletionServiceImplTest {
         verify(habitCompletionRepository, never()).save(any());
     }
 
+    //----------------------------getAllHabitsStatus------------------
+    @Test
+    @DisplayName("should return all HabitCompletion status when data exists")
+    void shouldReturnAllHabitCompletionStatus()
+    {
+        //given
+        List<HabitCompletion> expectedHabitCompletion = Arrays.asList(validHabitCompletion, anotherHabitCompletion);
+
+        //when
+
+        when(habitCompletionRepository.findAll()).thenReturn(expectedHabitCompletion);
+
+        //then
+        List<HabitCompletionDto> actualHabitsCompletion = habitCompletionService.getAllHabitsStatus();
+
+        assertThat(actualHabitsCompletion)
+                .isNotNull()
+                .hasSize(2)
+                .extracting(HabitCompletionDto::completed)
+                .containsExactly(true, false);
+
+        verify(habitCompletionRepository, times(1)).findAll();
+    }
+
+    @Test
+    void shouldThrowHabitCompletionServiceException()
+    {
+        //when
+
+        when(habitCompletionRepository.findAll())
+                .thenThrow(new DataAccessException("Database connection failed"){});
+
+        //then
+
+        assertThatThrownBy(() -> habitCompletionService.getAllHabitsStatus())
+                .isInstanceOf(HabitCompletionServiceException.class)
+                .hasMessageContaining("Failed to retrieve completion habits");
+
+        verify(habitCompletionRepository).findAll();
+
+    }
 }
