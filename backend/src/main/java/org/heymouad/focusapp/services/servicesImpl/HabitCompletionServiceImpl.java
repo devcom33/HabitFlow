@@ -9,7 +9,6 @@ import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
 import org.heymouad.focusapp.exceptions.HabitCompletionNotFoundException;
 import org.heymouad.focusapp.exceptions.HabitCompletionServiceException;
-import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.heymouad.focusapp.services.HabitCompletionService;
 import org.heymouad.focusapp.services.HabitService;
