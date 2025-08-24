@@ -226,4 +226,52 @@ class HabitCompletionServiceImplTest {
         verify(habitCompletionRepository).findAll();
 
     }
+
+    //-------------------------getTodayHabitsStatus---------------------------------
+    @Test
+    void shouldReturnAllTodayHabitsStatus() {
+        // given
+        LocalDate today = LocalDate.now();
+
+        validHabitCompletion.setCompletionDate(today);
+        anotherHabitCompletion.setCompletionDate(today);
+
+        List<HabitCompletion> expectedHabitCompletion = Arrays.asList(validHabitCompletion, anotherHabitCompletion);
+
+        // when
+        when(habitCompletionRepository.findHabitCompletionByCompletionDate(today)).thenReturn(expectedHabitCompletion);
+
+        // then
+        List<HabitCompletionDto> actualHabitsCompletion = habitCompletionService.getTodayHabitsStatus();
+
+        assertThat(actualHabitsCompletion)
+                .isNotNull()
+                .hasSize(2)
+                .extracting(HabitCompletionDto::completionDate)
+                .containsExactly(today, today);
+
+        verify(habitCompletionRepository, times(1)).findHabitCompletionByCompletionDate(today);
+    }
+
+
+    @Test
+    void shouldThrowHabitCompletionServiceExceptionWhenAnErrorTodayHabitsStatus()
+    {
+        //given
+        LocalDate today = LocalDate.now();
+
+        //when
+
+        when(habitCompletionRepository.findHabitCompletionByCompletionDate(today))
+                .thenThrow(new DataAccessException("Database connection failed"){});
+
+        //then
+
+        assertThatThrownBy(() -> habitCompletionService.getTodayHabitsStatus())
+                .isInstanceOf(HabitCompletionServiceException.class)
+                .hasMessageContaining("Failed to retrieve today completion habits");
+
+        verify(habitCompletionRepository).findHabitCompletionByCompletionDate(today);
+
+    }
 }
