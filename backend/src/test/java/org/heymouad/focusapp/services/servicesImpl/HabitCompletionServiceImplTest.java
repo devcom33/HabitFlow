@@ -2,6 +2,8 @@ package org.heymouad.focusapp.services.servicesImpl;
 
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
+import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
+import org.heymouad.focusapp.exceptions.HabitCompletionNotFoundException;
 import org.heymouad.focusapp.exceptions.HabitCompletionServiceException;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataAccessException;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -110,5 +113,18 @@ class HabitCompletionServiceImplTest {
                 .hasMessage("HabitCompletion Id must be a positive number");
 
         verify(habitCompletionRepository, never()).findById(invalidHabitCompletedId);
+    }
+
+    @Test
+    void shouldThrowHabitCompletionNotFoundException() {
+        Long invalidId = 100L;
+        //when
+        when(habitCompletionRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> habitCompletionService.updateHabitCompletionStatus(invalidId, true))
+                .isInstanceOf(HabitCompletionDataException.class)
+                .hasMessage("Failed to update habit completion status");
+
+        verify(habitCompletionRepository).findById(invalidId);
     }
 }
