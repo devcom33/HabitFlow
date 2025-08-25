@@ -4,9 +4,8 @@ services:
     ports:
       - "5431:5432"
     restart: always
-    environment:
-      POSTGRES_DB: lock_db
-      POSTGRES_PASSWORD: docker0000!
+    env_file:
+      - .env
 
   adminer:
     image: adminer:latest

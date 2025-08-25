@@ -38,3 +38,4 @@ frontend/build/
 .idea/
 .vscode/
 
+.env

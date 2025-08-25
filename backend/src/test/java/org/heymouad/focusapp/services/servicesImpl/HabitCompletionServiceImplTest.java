@@ -35,13 +35,13 @@ class HabitCompletionServiceImplTest {
     @InjectMocks
     private HabitCompletionServiceImpl habitCompletionService;
     private HabitCompletion validHabitCompletion, anotherHabitCompletion;
-    private Habit validHabit, anotherHabit;
+    private Habit validHabit;
 
     @BeforeEach
     void setUp()
     {
         validHabit = createHabit(1L, "Exercise");
-        anotherHabit = createHabit(2L, "Read");
+        Habit anotherHabit = createHabit(2L, "Read");
         validHabitCompletion = createHabitCompletion(1L, validHabit, true);
         anotherHabitCompletion = createHabitCompletion(2L, anotherHabit, false);
     }
@@ -52,6 +52,7 @@ class HabitCompletionServiceImplTest {
         habitCompletion.setId(id);
         habitCompletion.setHabit(habit);
         habitCompletion.setCompleted(completed);
+        habitCompletion.setCompletionDate(LocalDate.now());
 
         return habitCompletion;
     }
@@ -274,4 +275,7 @@ class HabitCompletionServiceImplTest {
         verify(habitCompletionRepository).findHabitCompletionByCompletionDate(today);
 
     }
+
+    //-------------resetDailyHabits---------------------------------------
+    
 }
