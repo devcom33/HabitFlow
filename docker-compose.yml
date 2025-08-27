@@ -6,6 +6,9 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
 
   adminer:
     image: adminer:latest
