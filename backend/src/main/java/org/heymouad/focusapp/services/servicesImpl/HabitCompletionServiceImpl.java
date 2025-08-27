@@ -107,23 +107,4 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
-    public void resetDailyHabits() {
-        log.info("Running daily habit reset...");
-        List<Habit> habits = habitService.getAllHabits();
-        habits.forEach(habit -> {
-            boolean exists = habitCompletionRepository.existsByHabitAndCompletionDate(habit, LocalDate.now());
-            if (!exists) {
-                HabitCompletion habitCompletion = new HabitCompletion();
-                habitCompletion.setHabit(habit);
-                habitCompletion.setCompletionDate(LocalDate.now());
-                habitCompletion.setCompleted(false);
-                try {
-                    saveHabitCompletion(habitCompletion);
-                } catch (HabitCompletionServiceException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
 }
