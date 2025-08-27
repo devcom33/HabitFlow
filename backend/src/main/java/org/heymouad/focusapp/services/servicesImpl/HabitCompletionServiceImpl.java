@@ -4,16 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.dtos.HabitCompletionDto;
 import org.heymouad.focusapp.dtos.HabitDto;
-import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
 import org.heymouad.focusapp.exceptions.HabitCompletionNotFoundException;
 import org.heymouad.focusapp.exceptions.HabitCompletionServiceException;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.heymouad.focusapp.services.HabitCompletionService;
-import org.heymouad.focusapp.services.HabitService;
 import org.springframework.dao.DataAccessException;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +24,6 @@ import java.util.Objects;
 @Slf4j
 public class HabitCompletionServiceImpl implements HabitCompletionService {
     private final HabitCompletionRepository habitCompletionRepository;
-    private final HabitService habitService;
 
     @Override
     @Transactional
