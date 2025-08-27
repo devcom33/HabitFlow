@@ -99,7 +99,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
                     .toList();
         } catch (DataAccessException e)
         {
-            throw new HabitCompletionServiceException("getTodayHabitsStatus", e);
+            throw new HabitCompletionServiceException("Failed to retrieve today completion habits", e);
         }
     }
 
