@@ -14,9 +14,9 @@ export const getHabitsService = async () => {
   }
 };
 
-export const getGridHabitsService = async () => {
+export const getGridHabitsService = async (habitId) => {
   try {
-    const response = await axios.get("/api/HabitsCompletion");
+    const response = await axios.get(`/api/habits/${habitId}/completions`);
     const dataGrids = response.data;
 
     // Process the data to create grid data

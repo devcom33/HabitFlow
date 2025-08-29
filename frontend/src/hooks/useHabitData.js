@@ -12,7 +12,7 @@ const useHabitData = () => {
   const [habits, setHabits] = useState([]);
   const [habitCompletions, setHabitCompletions] = useState([]);
   const [habitData, setHabitData] = useState({});
-  const [gridLoading, setGridLoading] = useState(false);
+  //const [gridLoading, setGridLoading] = useState(false);
 
   const fetchHabits = async () => {
     try {
@@ -43,7 +43,7 @@ const useHabitData = () => {
       setLoading(false);
     }
   };
-
+  /*
   const fetchGridData = async () => {
     try {
       setGridLoading(true);
@@ -56,12 +56,12 @@ const useHabitData = () => {
       setGridLoading(false);
     }
   };
-
+*/
   useEffect(() => {
     const loadData = async () => {
       await Promise.all([
         fetchHabits(),
-        fetchGridData(),
+        //fetchGridData(),
         fetchHabitsCompletionsTodayStatus(),
       ]);
     };
@@ -109,9 +109,11 @@ const useHabitData = () => {
     setHabitCompletions((prev) => [...prev, completion]);
   };
 
+  /*
   const refreshGridData = () => {
     fetchGridData();
   };
+  */
 
   return {
     habits,
@@ -121,9 +123,9 @@ const useHabitData = () => {
     habitData,
     loading,
     error,
-    gridLoading,
+    //gridLoading,
     refetch: fetchHabits,
-    refreshGridData,
+    //refreshGridData,
   };
 };
 
