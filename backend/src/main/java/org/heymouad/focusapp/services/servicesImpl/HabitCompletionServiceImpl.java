@@ -103,4 +103,22 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
         }
     }
 
+    @Override
+    public List<HabitCompletionDto> getHabitsCompletionByHabitId(Long habitId) {
+        try{
+            return habitCompletionRepository.findHabitCompletionByHabit_Id(habitId)
+                    .stream()
+                    .map(ths -> new HabitCompletionDto(
+                            ths.getId(),
+                            ths.isCompleted(),
+                            ths.getCompletionDate(),
+                            new HabitDto(ths.getHabit().getId(), ths.getHabit().getName())
+                    ))
+                    .toList();
+        }catch (DataAccessException e)
+        {
+            throw new HabitCompletionServiceException("Failed to retrieve today completion habits", e);
+        }
+    }
+
 }

@@ -22,7 +22,7 @@ const Dashboard = () => {
   const handleDayClick = (dateKey) => {
     console.log(`Clicked on ${dateKey}`);
   };
-  console.log("habit data : ", habitData);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <NavBar />
@@ -35,21 +35,11 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <HabitGrid
-              habitData={habitGridData}
-              onDayClick={handleDayClick}
-              loading={gridLoading}
-              onRefresh={refreshGridData}
-            />
-          </div>
-
-          <div className="space-y-6">
+        <div className="text-center mb-12 ">
+          <div className="relative">
             <Stats habitCompletions={habitCompletions} habitData={habitData} />
           </div>
         </div>
-
         <HabitList
           habitCompletions={habitCompletions}
           toggleHabit={toggleHabit}

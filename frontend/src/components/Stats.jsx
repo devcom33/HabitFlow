@@ -26,30 +26,29 @@ const Stats = ({ habitCompletions, habitData }) => {
   const currentStreak = calculateStreak();
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6">
-      <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-        <TrendingUp className="w-5 h-5 text-purple-400" />
-        Statistics
-      </h2>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="text-center">
-          <div className="text-3xl font-bold text-blue-400">
-            {completed}/{total}
-          </div>
-          <div className="text-gray-400 text-sm">Today's Progress</div>
+    <div className="inline-flex items-center gap-6 px-6 py-3 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-full">
+      <div className="text-center">
+        <div className="text-2xl font-bold text-green-400">
+          {completed}/{total}
         </div>
-        <div className="text-center">
-          <div className="text-3xl font-bold text-green-400">{percent}</div>
-          <div className="text-gray-400 text-sm">Completion Rate</div>
-        </div>
-        <div className="text-center col-span-2">
+        <div className="text-xs text-gray-500">Today's Progress</div>
+      </div>
+      <div className="w-px h-8 bg-gray-600" />
+      <div className="text-center">
+        <div className="text-2xl font-bold text-blue-400">{percent}</div>
+        <div className="text-xs text-gray-500">Completion Rate</div>
+      </div>
+      <div className="w-px h-8 bg-gray-600" />
+      <div className="text-center">
+        <div className="text-2xl font-bold text-purple-400">{total}</div>
+        <div className="text-xs text-gray-500">Total Habits</div>
+      </div>
+      {/*<div className="text-center col-span-2">
           <div className="text-3xl font-bold text-purple-400">
             {currentStreak}
           </div>
           <div className="text-gray-400 text-sm">Day Streak</div>
-        </div>
-      </div>
+  </div>*/}
     </div>
   );
 };

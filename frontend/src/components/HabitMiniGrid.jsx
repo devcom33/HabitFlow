@@ -1,33 +1,41 @@
 import React from "react";
-import { Calendar, RefreshCw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 
-const HabitGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
+const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   const today = new Date();
-  const startDate = new Date(today.getFullYear(), 0, 1);
 
-  console.log("Habit Data : ", habitData);
+  // Calculate the start date: 27 days ago (so including today = 28 days total)
+  const startDate = new Date();
+  startDate.setDate(today.getDate() - 27);
+
   const getDayIntensity = (date) => {
     const dateKey = date.toISOString().split("T")[0];
     const count = habitData[dateKey] || 0;
     if (count === 0) return "bg-gray-700";
-    if (count <= 2) return "bg-green-900";
-    if (count <= 4) return "bg-green-700";
-    if (count <= 6) return "bg-green-500";
+    if (count <= 2) return "bg-green-500";
+    //if (count <= 4) return "bg-green-700";
+    //if (count <= 6) return "bg-green-500";
     return "bg-green-400";
   };
 
   const weeks = [];
+
+  // Start from the Sunday of the week containing our start date
   const currentDate = new Date(startDate);
   currentDate.setDate(currentDate.getDate() - currentDate.getDay());
 
-  for (let week = 0; week < 53; week++) {
+  for (let week = 0; week < 6; week++) {
     const days = [];
+
     for (let day = 0; day < 7; day++) {
       const dayKey = new Date(currentDate).toISOString().split("T")[0];
       const isToday = dayKey === today.toISOString().split("T")[0];
       const isPastYear = currentDate.getFullYear() < today.getFullYear();
 
-      if (!isPastYear) {
+      // Only show days that are within our 28-day window and not from past years
+      const isWithinRange = currentDate >= startDate && currentDate <= today;
+
+      if (!isPastYear && isWithinRange) {
         days.push(
           <div
             key={`${week}-${day}`}
@@ -41,9 +49,11 @@ const HabitGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
           />
         );
       }
+
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
+    // Only add weeks that have days in them
     if (days.length > 0) {
       weeks.push(
         <div key={week} className="flex flex-col gap-1">
@@ -56,10 +66,6 @@ const HabitGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   return (
     <div className="bg-gray-800 rounded-lg p-6">
       <div className="flex items-center justify-between mb-4">
-        {/*<h2 className="text-xl font-semibold text-white flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-blue-400" />
-          Habit Progress
-  </h2>*/}
         <div className="flex items-center gap-4">
           {onRefresh && (
             <button
@@ -76,7 +82,7 @@ const HabitGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
           <div className="flex items-center gap-2 text-sm text-gray-400">
             <span>Less</span>
             <div className="flex gap-1">
-              <div className="w-3 h-3 bg-gray-800 rounded-sm"></div>
+              <div className="w-3 h-3 bg-gray-700 rounded-sm"></div>
               <div className="w-3 h-3 bg-green-900 rounded-sm"></div>
               <div className="w-3 h-3 bg-green-700 rounded-sm"></div>
               <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
@@ -94,8 +100,13 @@ const HabitGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
       ) : (
         <div className="flex gap-1 overflow-x-auto pb-2">{weeks}</div>
       )}
+
+      <div className="text-xs text-gray-500 mt-2">
+        Showing last 28 days: {startDate.toLocaleDateString()} to{" "}
+        {today.toLocaleDateString()}
+      </div>
     </div>
   );
 };
 
-export default HabitGrid;
+export default HabitMiniGrid;

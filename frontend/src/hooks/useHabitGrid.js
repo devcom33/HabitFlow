@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getGridHabitsService } from "../services/getHabitsService";
 
-const useHabitGrid = (HabitId) => {
+const useHabitGrid = (habitId) => {
   const [gridLoading, setGridLoading] = useState(false);
   const [habitData, setHabitData] = useState({});
 
-  const fetchGridData = async (habitId) => {
+  const fetchGridData = async (id) => {
     try {
       setGridLoading(true);
-      const gridData = await getGridHabitsService(habitId);
+      const gridData = await getGridHabitsService(id);
       console.log("Fetched grid data:", gridData);
       setHabitData(gridData);
     } catch (error) {
@@ -19,15 +19,15 @@ const useHabitGrid = (HabitId) => {
   };
 
   useEffect(() => {
-    const loadData = async () => {
-      await Promise.all([fetchGridData(HabitId)]);
-    };
-    loadData();
-  }, [HabitId]);
+    if (habitId) {
+      fetchGridData(habitId);
+    }
+  }, [habitId]);
 
-  const refreshGridData = () => {
-    fetchGridData(HabitId);
-  };
+  const refreshGridData = useCallback(() => {
+    fetchGridData(habitId);
+  }, [habitId]);
+
   return { habitGridData: habitData, gridLoading, refreshGridData };
 };
 

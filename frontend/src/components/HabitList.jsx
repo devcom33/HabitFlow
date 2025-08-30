@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { CheckCircle, Plus } from "lucide-react";
+import { CheckCircle, Plus, Calendar } from "lucide-react";
 import {
   addHabitService,
   addHabitStatsService,
 } from "../services/addHabitService";
+import HabitItem from "./HabitItem";
 
 const HabitList = ({ habitCompletions, toggleHabit, addHabit }) => {
   const [newHabit, setNewHabit] = useState("");
+
+  const handleDayClick = (dateKey) => {
+    console.log(`Clicked on ${dateKey}`);
+  };
 
   const handleAddHabit = async () => {
     if (newHabit.trim()) {
@@ -16,45 +21,35 @@ const HabitList = ({ habitCompletions, toggleHabit, addHabit }) => {
       setNewHabit("");
     }
   };
+
   return (
     <div className="bg-gray-800 rounded-lg p-6">
-      <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-        <CheckCircle className="w-5 h-5 text-green-400" />
-        Today's Habits
-      </h2>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-white mb-2 flex items-center gap-2">
+          <CheckCircle className="w-5 h-5 text-green-400" />
+          Today's Habits
+        </h2>
 
-      <div className="space-y-3 mb-4">
-        {console.log("dispaly Habit Completion : ", habitCompletions)}
+        <div className="flex items-center gap-2 text-gray-400 text-sm">
+          <Calendar className="w-4 h-4" />
+          <span>
+            {new Date().toLocaleDateString("en-US", {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 lg:grid-cols-3 gap-6 mb-4">
         {habitCompletions?.map((completion) => (
-          <div
+          <HabitItem
             key={completion.id}
-            className={`flex items-center justify-between p-3 rounded-lg ${
-              completion.completed ? "bg-green-900" : "bg-gray-700"
-            }`}
-          >
-            <span
-              className={`${
-                completion.completed
-                  ? "text-green-200 line-through"
-                  : "text-white"
-              }`}
-            >
-              {completion.habit.name}
-            </span>
-            <button
-              onClick={() => toggleHabit(completion.id)}
-              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                completion.completed
-                  ? "bg-green-500 border-green-500"
-                  : "border-gray-400 hover:border-green-400"
-              }`}
-            >
-              {console.log("toggle : ", completion)}
-              {completion.completed && (
-                <CheckCircle className="w-4 h-4 text-white" />
-              )}
-            </button>
-          </div>
+            completion={completion}
+            toggleHabit={toggleHabit}
+            onDayClick={handleDayClick}
+          />
         ))}
       </div>
 
