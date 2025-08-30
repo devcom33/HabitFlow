@@ -4,9 +4,9 @@ import { RefreshCw } from "lucide-react";
 const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   const today = new Date();
 
-  // Calculate the start date: 27 days ago (so including today = 28 days total)
+  // Calculate the start date: 27 days ago
   const startDate = new Date();
-  startDate.setDate(today.getDate() - 27);
+  startDate.setDate(today.getDate() - 123);
 
   const getDayIntensity = (date) => {
     const dateKey = date.toISOString().split("T")[0];
@@ -24,7 +24,7 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   const currentDate = new Date(startDate);
   currentDate.setDate(currentDate.getDate() - currentDate.getDay());
 
-  for (let week = 0; week < 6; week++) {
+  for (let week = 0; week < 18; week++) {
     const days = [];
 
     for (let day = 0; day < 7; day++) {
