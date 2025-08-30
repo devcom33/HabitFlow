@@ -38,4 +38,6 @@ frontend/build/
 .idea/
 .vscode/
 
-.env
+.env  
+
+./backend/README-PROJECT.md
