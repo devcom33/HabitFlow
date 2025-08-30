@@ -81,6 +81,7 @@ http://localhost:5173
 ## 📸 Screenshots
 
 ![Screenshot](./frontend/public/habitflow.png)
+![Screenshot](./frontend/public/habitflow-2.png)
 
 ## Contributing
 
@@ -89,7 +90,7 @@ Contributions are welcome — whether it's a bug fix, new feature, or even just 
 ```bash
 # Fork the project
 
-git clone https://github.com/your-username/habitflow.git
+git clone https://github.com/devcom33/habitflow.git
 
 # Create a new feature branch
 
