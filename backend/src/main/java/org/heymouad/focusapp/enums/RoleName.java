@@ -1,4 +1,6 @@
 package org.heymouad.focusapp.enums;
 
-public record RoleName() {
+public enum RoleName {
+    ROLE_ADMIN,
+    ROLE_USER
 }
