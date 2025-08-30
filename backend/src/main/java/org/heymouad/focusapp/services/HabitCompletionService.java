@@ -12,4 +12,5 @@ public interface HabitCompletionService {
     List<HabitCompletionDto> getAllHabitsStatus();
     List<HabitCompletionDto> getTodayHabitsStatus();
     HabitCompletion updateHabitCompletionStatus(Long id, Boolean completed);
+    public List<HabitCompletionDto> getHabitsCompletionByHabitId(Long habitId);
 }

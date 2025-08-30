@@ -54,6 +54,13 @@ public class HabitCompletionController {
     public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletionStatus() throws HabitCompletionServiceException {
         return ResponseEntity.ok(habitCompletionService.getTodayHabitsStatus());
     }
+    /*
+        getHabitsCompletionByHabitId - get completed habits by habit Id
+     */
+    @GetMapping("/habits/{habitId}/completions")
+    public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletionByHabitId(@PathVariable Long habitId) throws HabitCompletionServiceException {
+        return ResponseEntity.ok(habitCompletionService.getHabitsCompletionByHabitId(habitId));
+    }
 
     @PatchMapping("/completions/{id}")
     public ResponseEntity<HabitCompletionDto> updateHabit(@PathVariable Long id, @RequestBody HabitUpdateRequest habitUpdateRequest) throws HabitCompletionServiceException, HabitCompletionDataException {

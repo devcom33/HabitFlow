@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface HabitCompletionRepository extends JpaRepository<HabitCompletion, Long> {
     List<HabitCompletion> findHabitCompletionByCompletionDate(LocalDate completionDate);
+    List<HabitCompletion> findHabitCompletionByHabit_Id(Long HabitId);
     boolean existsByHabitAndCompletionDate(Habit habit, LocalDate date);
 
 }
