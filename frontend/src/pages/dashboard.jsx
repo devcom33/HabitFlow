@@ -46,6 +46,13 @@ const Dashboard = () => {
           addHabit={addCompletionHabit}
         />
       </div>
+
+      <div className="text-center py-8 border-t border-gray-800/50">
+        <p className="text-gray-500 text-sm">
+          "Success is the sum of small efforts repeated day in and day out." -
+          Robert Collier
+        </p>
+      </div>
     </div>
   );
 };
