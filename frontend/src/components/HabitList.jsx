@@ -52,7 +52,7 @@ const HabitList = ({ habitCompletions, toggleHabit, addHabit }) => {
           />
         ))}
       </div>
-
+      {/*
       <div className="flex gap-2">
         <input
           value={newHabit}
@@ -69,7 +69,7 @@ const HabitList = ({ habitCompletions, toggleHabit, addHabit }) => {
           <Plus className="w-4 h-4" />
           Add
         </button>
-      </div>
+      </div>*/}
     </div>
   );
 };
