@@ -8,12 +8,12 @@ import {
 const AddHabitModal = ({ isOpen, onClose, onAddHabit }) => {
   const [habitName, setHabitName] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (habitName.trim()) {
-      const habit = await addHabitService(newHabit.trim());
+      const habit = await addHabitService(habitName.trim());
       const Completion = await addHabitStatsService(habit.id);
-      onAddHabit(Completion.trim());
+      onAddHabit(Completion);
       setHabitName("");
       onClose();
     }
