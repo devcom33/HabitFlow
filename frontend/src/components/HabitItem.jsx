@@ -1,5 +1,4 @@
 import React from "react";
-import { CheckCircle } from "lucide-react";
 import HabitMiniGrid from "./HabitMiniGrid";
 import useHabitGrid from "../hooks/useHabitGrid";
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CheckCircle, Plus, Calendar } from "lucide-react";
+import { CheckCircle, Calendar } from "lucide-react";
 import {
   addHabitService,
   addHabitStatsService,
@@ -11,15 +11,6 @@ const HabitList = ({ habitCompletions, toggleHabit, addHabit }) => {
 
   const handleDayClick = (dateKey) => {
     console.log(`Clicked on ${dateKey}`);
-  };
-
-  const handleAddHabit = async () => {
-    if (newHabit.trim()) {
-      const habit = await addHabitService(newHabit.trim());
-      const Completion = await addHabitStatsService(habit.id);
-      addHabit(Completion);
-      setNewHabit("");
-    }
   };
 
   return (
@@ -51,27 +42,6 @@ const HabitList = ({ habitCompletions, toggleHabit, addHabit }) => {
           />
         ))}
       </div>
-
-      {/* Uncomment if you want to add the input section back */}
-      {/*
-      <div className="flex flex-col sm:flex-row gap-2">
-        <input
-          value={newHabit}
-          onChange={(e) => setNewHabit(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleAddHabit()}
-          type="text"
-          placeholder="Add a new habit..."
-          className="flex-1 bg-gray-700 text-white px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
-        />
-        <button
-          onClick={handleAddHabit}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm sm:text-base"
-        >
-          <Plus className="w-4 h-4" />
-          Add
-        </button>
-      </div>
-      */}
     </div>
   );
 };
