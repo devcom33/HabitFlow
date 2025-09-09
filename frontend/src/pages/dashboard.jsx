@@ -18,7 +18,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <NavBar onAddHabit={false} />
+      <NavBar onAddHabit={addCompletionHabit} />
 
       <div className="max-w-7xl mx-auto p-6 space-y-6">
         <div className="text-center mb-8">
