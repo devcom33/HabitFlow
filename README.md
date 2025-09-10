@@ -1,3 +1,5 @@
+![Screenshot](./frontend/public/HabitFlow.png)
+
 # HabitFlow — Track. Improve. Transform.
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/devcom33/habitflow?style=social)
