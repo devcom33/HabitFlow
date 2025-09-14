@@ -8,13 +8,16 @@ import org.heymouad.focusapp.dtos.AuthenticationResponse;
 import org.heymouad.focusapp.dtos.RegisterRequest;
 import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.enums.RoleName;
+import org.heymouad.focusapp.repositories.AppRoleRepository;
 import org.heymouad.focusapp.repositories.AppUserRepository;
 import org.heymouad.focusapp.services.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,14 +26,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final AppRoleRepository appRoleRepository;
 
     @Override
     public AuthenticationResponse register(RegisterRequest request)
     {
+        var userRole = appRoleRepository.findByRole(RoleName.USER)
+                .orElseThrow(() -> new IllegalStateException("Default role USER not found"));
+
         var user = AppUser.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
+                .roles(Set.of(userRole))
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         appUserRepository.save(user);
@@ -45,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
 
         var user = appUserRepository.findByEmail(request.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }
