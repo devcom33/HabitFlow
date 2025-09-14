@@ -1,4 +1,4 @@
-package org.heymouad.focusapp.config;
+package org.heymouad.focusapp.bootstrap;
 
 import lombok.RequiredArgsConstructor;
 import org.heymouad.focusapp.entities.AppRole;
