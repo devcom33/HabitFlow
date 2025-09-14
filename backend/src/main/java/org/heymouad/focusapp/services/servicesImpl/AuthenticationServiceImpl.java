@@ -6,6 +6,7 @@ import org.heymouad.focusapp.config.JwtService;
 import org.heymouad.focusapp.dtos.AuthenticationRequest;
 import org.heymouad.focusapp.dtos.AuthenticationResponse;
 import org.heymouad.focusapp.dtos.RegisterRequest;
+import org.heymouad.focusapp.entities.AppRole;
 import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.enums.RoleName;
 import org.heymouad.focusapp.repositories.AppRoleRepository;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,16 +33,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponse register(RegisterRequest request)
     {
-        var userRole = appRoleRepository.findByRole(RoleName.USER)
-                .orElseThrow(() -> new IllegalStateException("Default role USER not found"));
+        var roles = request.getRoles();
+        if (roles == null || roles.isEmpty()) {
+            roles = Set.of(RoleName.USER);
+        }
+        Set<AppRole> assignedRoles = roles.stream()
+                .map(roleName -> appRoleRepository.findByRole(roleName)
+                        .orElseThrow(() -> new IllegalStateException("Role not found: " + roleName)))
+                .collect(Collectors.toSet());
 
         var user = AppUser.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
-                .roles(Set.of(userRole))
+                .roles(assignedRoles)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
+
         appUserRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
