@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-import { login } from "../services/authService";
+import { login as loginService } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../store/AuthContext";
 
 const Login = () => {
+  const { login: setUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -22,7 +24,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(formData.email, formData.password);
+      const data = await loginService(formData.email, formData.password);
+      console.log("login successfully : ", data);
+      setUser(data);
       navigate("/");
     } catch (err) {
       setError("Invalid email or password.");
