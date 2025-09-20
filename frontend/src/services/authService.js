@@ -4,8 +4,10 @@ export const login = async (email, password) => {
   try {
     const response = await loginApi(email, password);
     if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("auth", JSON.stringify(response.data));
     }
+
+    return response.data;
   } catch (e) {
     console.error("login error ", e);
     throw e;
