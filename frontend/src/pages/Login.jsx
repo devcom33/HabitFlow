@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
 
 const Login = () => {
-  const { login: setUser } = useAuth();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Login = () => {
     try {
       const data = await loginService(formData.email, formData.password);
       console.log("login successfully : ", data);
-      setUser(data);
+      login(data);
       navigate("/");
     } catch (err) {
       setError("Invalid email or password.");
