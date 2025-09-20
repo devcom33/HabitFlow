@@ -15,7 +15,7 @@ public class HabitResetScheduler {
         this.habitResetService = habitResetService;
     }
 
-    @Scheduled(cron = "0 46 12 * * *")
+    @Scheduled(cron = "0 26 14 * * *")
     public void runDailyReset() {
         habitResetService.resetDailyHabits(LocalDate.now());
     }

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.heymouad.focusapp.entities.AppRole;
 import org.heymouad.focusapp.enums.RoleName;
 
 import java.util.Set;

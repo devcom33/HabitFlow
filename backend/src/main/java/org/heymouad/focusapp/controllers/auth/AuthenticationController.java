@@ -1,6 +1,7 @@
 package org.heymouad.focusapp.controllers.auth;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.dtos.AuthenticationRequest;
 import org.heymouad.focusapp.dtos.AuthenticationResponse;
 import org.heymouad.focusapp.dtos.RegisterRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -27,6 +29,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request)
     {
+        log.info("authentification : {}",authenticationService.authenticate(request).toString());
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 }
