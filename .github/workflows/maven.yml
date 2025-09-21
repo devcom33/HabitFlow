@@ -45,6 +45,7 @@ jobs:
         with:
           image: devcom33/habitflow-image
           registry: docker.io
-          dockerfile: '/backend/Dockerfile'
+          dockerfile: backend/Dockerfile
+	  context: backend
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
