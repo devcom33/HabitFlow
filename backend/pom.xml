@@ -175,6 +175,7 @@
             </plugin>
 
         </plugins>
+        <finalName>habitflow-image</finalName>
     </build>
 
 </project>
