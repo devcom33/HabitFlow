@@ -4,7 +4,7 @@ WORKDIR /app
 
 
 # Copy the prebuilt JAR from Maven
-COPY target/*.jar habitflow-image.jar
+COPY backend/target/*.jar habitflow-image.jar
 
 EXPOSE 8080
 
