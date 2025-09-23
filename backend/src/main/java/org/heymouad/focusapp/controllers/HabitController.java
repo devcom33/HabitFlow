@@ -33,6 +33,7 @@ public class HabitController {
         return ResponseEntity.ok(savedHabit);
     }
 
+    
     @GetMapping("/getHabits")
     public ResponseEntity<List<Habit>> getAllHabits() throws HabitServiceException {
         List<Habit> habitList = habitService.getAllHabits();
