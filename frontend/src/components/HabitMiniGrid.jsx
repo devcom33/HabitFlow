@@ -3,10 +3,9 @@ import { RefreshCw } from "lucide-react";
 
 const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   const today = new Date();
-
-  // Calculate the start date: 27 days ago
   const startDate = new Date();
-  startDate.setDate(today.getDate() - 123);
+
+  startDate.setMonth(today.getMonth() - 3);
 
   const getDayIntensity = (date) => {
     const dateKey = date.toISOString().split("T")[0];
@@ -20,11 +19,13 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
 
   const weeks = [];
 
-  // Start from the Sunday of the week containing our start date
   const currentDate = new Date(startDate);
   currentDate.setDate(currentDate.getDate() - currentDate.getDay());
 
-  for (let week = 0; week < 18; week++) {
+  const diffInDays = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
+  const totalWeeks = Math.ceil(diffInDays / 7);
+
+  for (let week = 0; week < totalWeeks; week++) {
     const days = [];
 
     for (let day = 0; day < 7; day++) {
@@ -32,7 +33,6 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
       const isToday = dayKey === today.toISOString().split("T")[0];
       const isPastYear = currentDate.getFullYear() < today.getFullYear();
 
-      // Only show days that are within our 28-day window and not from past years
       const isWithinRange = currentDate >= startDate && currentDate <= today;
 
       if (!isPastYear && isWithinRange) {
@@ -53,7 +53,6 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    // Only add weeks that have days in them
     if (days.length > 0) {
       weeks.push(
         <div key={week} className="flex flex-col gap-1">
@@ -102,7 +101,7 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
       )}
 
       <div className="text-xs text-gray-500 mt-2">
-        Showing last 28 days: {startDate.toLocaleDateString()} to{" "}
+        Showing last 3 months: {startDate.toLocaleDateString()} to{" "}
         {today.toLocaleDateString()}
       </div>
     </div>
