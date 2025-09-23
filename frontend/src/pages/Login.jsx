@@ -8,6 +8,7 @@ const Login = () => {
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -23,13 +24,16 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setLoading(true);
     try {
       const data = await loginService(formData.email, formData.password);
-      console.log("login successfully : ", data);
       login(data);
       navigate("/");
     } catch (err) {
       setError("Invalid email or password.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,13 +104,14 @@ const Login = () => {
                 </button>
               </div>
             </div>
-
-            <button
-              onClick={handleSubmit}
-              className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/50"
-            >
-              Sign In
-            </button>
+            <form onSubmit={handleSubmit}>
+              <button
+                type="submit"
+                className="w-full py-3 px-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500/50"
+              >
+                Sign In
+              </button>
+            </form>
           </div>
         </div>
 
