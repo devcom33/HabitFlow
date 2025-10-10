@@ -19,7 +19,7 @@ public class UserController {
     private final AppUserMapper appUserMapper;
 
 
-    @GetMapping
+    @GetMapping("/info")
     public ResponseEntity<UserInfoResponse> getCurrentUser(Authentication authentication)
     {
         String email = authentication.getName();
