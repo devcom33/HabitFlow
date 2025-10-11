@@ -2,6 +2,8 @@ package org.heymouad.focusapp.controllers;
 
 
 import lombok.RequiredArgsConstructor;
+import org.heymouad.focusapp.dtos.AppUserResponse;
+import org.heymouad.focusapp.dtos.UserInfoRequest;
 import org.heymouad.focusapp.dtos.UserInfoResponse;
 import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.mappers.AppUserMapper;
@@ -19,7 +21,7 @@ public class UserController {
     private final AppUserMapper appUserMapper;
 
 
-    @GetMapping("/info")
+    @GetMapping("/settings")
     public ResponseEntity<UserInfoResponse> getCurrentUser(Authentication authentication)
     {
         String email = authentication.getName();
@@ -29,6 +31,15 @@ public class UserController {
         UserInfoResponse userInfo = appUserMapper.toUserInfoResponse(appUser);
         return ResponseEntity.ok().body(userInfo);
 
+    }
+    @PatchMapping("/settings/update")
+    public ResponseEntity<AppUserResponse> updateUserSettings(
+            @RequestBody UserInfoRequest userInfoRequest,
+            Authentication authentication)
+    {
+        String currentUserEmail = authentication.getName();
+        AppUserResponse updatedUser = appUserService.updateUserSettings(currentUserEmail, userInfoRequest);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @GetMapping("/info/{id}")
