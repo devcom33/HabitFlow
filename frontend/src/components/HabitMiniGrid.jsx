@@ -10,11 +10,9 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   const getDayIntensity = (date) => {
     const dateKey = date.toISOString().split("T")[0];
     const count = habitData[dateKey] || 0;
-    if (count === 0) return "bg-gray-700";
-    if (count <= 2) return "bg-green-500";
-    //if (count <= 4) return "bg-green-700";
-    //if (count <= 6) return "bg-green-500";
-    return "bg-green-400";
+    if (count === 0) return "bg-gray-200";
+    if (count <= 2) return "bg-green-400";
+    return "bg-green-500";
   };
 
   const weeks = [];
@@ -41,7 +39,7 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
             key={`${week}-${day}`}
             className={`w-3 h-3 rounded-sm cursor-pointer transition-all hover:scale-110 ${getDayIntensity(
               currentDate
-            )} ${isToday ? "ring-2 ring-blue-400" : ""}`}
+            )} ${isToday ? "ring-2 ring-blue-500" : ""}`}
             onClick={() => onDayClick && onDayClick(dayKey)}
             title={`${currentDate.toDateString()}: ${
               habitData[dayKey] || 0
@@ -63,14 +61,14 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6">
+    <div className="bg-white rounded-lg p-6 border border-gray-100">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
           {onRefresh && (
             <button
               onClick={onRefresh}
               disabled={loading}
-              className="p-1 text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+              className="p-1 text-gray-500 hover:text-gray-700 transition-colors disabled:opacity-50"
               title="Refresh grid data"
             >
               <RefreshCw
@@ -78,14 +76,14 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
               />
             </button>
           )}
-          <div className="flex items-center gap-2 text-sm text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
             <span>Less</span>
             <div className="flex gap-1">
-              <div className="w-3 h-3 bg-gray-700 rounded-sm"></div>
-              <div className="w-3 h-3 bg-green-900 rounded-sm"></div>
-              <div className="w-3 h-3 bg-green-700 rounded-sm"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
+              <div className="w-3 h-3 bg-gray-200 rounded-sm"></div>
+              <div className="w-3 h-3 bg-green-200 rounded-sm"></div>
+              <div className="w-3 h-3 bg-green-300 rounded-sm"></div>
               <div className="w-3 h-3 bg-green-400 rounded-sm"></div>
+              <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
             </div>
             <span>More</span>
           </div>
@@ -94,7 +92,7 @@ const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
 
       {loading ? (
         <div className="flex items-center justify-center h-32">
-          <div className="text-gray-400">Loading grid data...</div>
+          <div className="text-gray-500">Loading grid data...</div>
         </div>
       ) : (
         <div className="flex gap-1 overflow-x-auto pb-2">{weeks}</div>

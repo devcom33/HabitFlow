@@ -1,4 +1,3 @@
-import React from "react";
 import HabitMiniGrid from "./HabitMiniGrid";
 import useHabitGrid from "../hooks/useHabitGrid";
 
@@ -8,12 +7,12 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
   );
 
   return (
-    <div className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 hover:border-gray-600 transition-all duration-300 hover:shadow-xl hover:shadow-gray-900/20">
+    <div className="group relative overflow-hidden rounded-xl bg-white/90 border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-xl shadow-lg">
       <div
         className={`absolute top-0 left-0 w-full h-1 ${
           completion.completed
-            ? "bg-gradient-to-r from-green-400 to-emerald-500"
-            : "bg-gray-600"
+            ? "bg-gradient-to-r from-green-500 to-emerald-600"
+            : "bg-gray-300"
         }`}
       />
 
@@ -23,15 +22,15 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
             <h3
               className={`font-medium text-base sm:text-lg transition-all duration-200 ${
                 completion.completed
-                  ? "text-green-300 opacity-75"
-                  : "text-white group-hover:text-gray-100"
+                  ? "text-green-600 opacity-80"
+                  : "text-gray-800 group-hover:text-gray-700"
               }`}
             >
               {completion.habit.name}
             </h3>
             <div
               className={`text-xs sm:text-sm mt-1 ${
-                completion.completed ? "text-green-400/70" : "text-gray-400"
+                completion.completed ? "text-green-600/70" : "text-gray-500"
               }`}
             >
               {completion.completed ? "Completed today" : "Not completed"}
@@ -43,7 +42,7 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
             className={`relative flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg border-2 flex items-center justify-center transition-all duration-200 transform hover:scale-105 active:scale-95 ${
               completion.completed
                 ? "bg-gradient-to-br from-green-500 to-emerald-600 border-green-500 shadow-lg shadow-green-500/25"
-                : "border-gray-500 hover:border-green-400 hover:shadow-lg hover:shadow-green-400/20 bg-gray-800/50 backdrop-blur-sm"
+                : "border-gray-300 hover:border-green-400 hover:shadow-lg hover:shadow-green-400/20 bg-gray-100"
             }`}
           >
             {completion.completed && (
@@ -68,7 +67,7 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
         </div>
 
         <div className="relative">
-          <div className="bg-gray-800/30 rounded-lg p-2 sm:p-3 lg:p-4 border border-gray-700/50 backdrop-blur-sm">
+          <div className="bg-gray-100 rounded-lg p-2 sm:p-3 lg:p-4 border border-gray-200">
             <HabitMiniGrid
               habitData={habitGridData}
               onDayClick={onDayClick}
