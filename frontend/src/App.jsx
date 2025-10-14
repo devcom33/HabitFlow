@@ -3,6 +3,8 @@ import "./App.css";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/dashboard";
 import HabitDetails from "./pages/habitDetails";
+import UserSettings from "./pages/userSettings";
+import MyHabits from "./pages/myHabits";
 import Login from "./pages/Login";
 import { AuthProvider } from "./store/AuthContext";
 
@@ -24,6 +26,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <HabitDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <UserSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-habits"
+            element={
+              <ProtectedRoute>
+                <MyHabits />
               </ProtectedRoute>
             }
           />
