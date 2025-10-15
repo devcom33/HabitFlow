@@ -7,11 +7,11 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
   );
 
   return (
-    <div className="group relative overflow-hidden rounded-xl bg-white/90 border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-xl shadow-lg">
+    <div className="group relative overflow-hidden rounded-xl bg-white shadow-md border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg">
       <div
         className={`absolute top-0 left-0 w-full h-1 ${
           completion.completed
-            ? "bg-gradient-to-r from-green-500 to-emerald-600"
+            ? "bg-gradient-to-r from-green-400 to-green-600"
             : "bg-gray-300"
         }`}
       />
@@ -22,7 +22,7 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
             <h3
               className={`font-medium text-base sm:text-lg transition-all duration-200 ${
                 completion.completed
-                  ? "text-green-600 opacity-80"
+                  ? "text-green-600 opacity-90"
                   : "text-gray-800 group-hover:text-gray-700"
               }`}
             >
@@ -39,42 +39,33 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
 
           <button
             onClick={() => toggleHabit(completion.id)}
-            className={`relative flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg border-2 flex items-center justify-center transition-all duration-200 transform hover:scale-105 active:scale-95 ${
+            className={`relative flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 border-2 ${
               completion.completed
-                ? "bg-gradient-to-br from-green-500 to-emerald-600 border-green-500 shadow-lg shadow-green-500/25"
-                : "border-gray-300 hover:border-green-400 hover:shadow-lg hover:shadow-green-400/20 bg-gray-100"
+                ? "border-green-600 bg-green-100 text-green-600"
+                : "border-gray-300 bg-gray-100 text-gray-500 hover:bg-gray-200"
             }`}
           >
-            {completion.completed && (
-              <div className="w-4 h-4 sm:w-5 sm:h-5 bg-white rounded-sm flex items-center justify-center">
-                <svg
-                  className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-            )}
-            {!completion.completed && (
-              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-sm bg-gray-500 group-hover:bg-green-400 transition-colors duration-200" />
+            {completion.completed ? (
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            ) : (
+              <div className="w-2 h-2 rounded-full bg-gray-500" />
             )}
           </button>
         </div>
 
         <div className="relative">
-          <div className="bg-gray-100 rounded-lg p-2 sm:p-3 lg:p-4 border border-gray-200">
-            <HabitMiniGrid
-              habitData={habitGridData}
-              onDayClick={onDayClick}
-              loading={gridLoading}
-              onRefresh={refreshGridData}
-            />
-          </div>
+          <HabitMiniGrid
+            habitData={habitGridData}
+            onDayClick={onDayClick}
+            loading={gridLoading}
+            onRefresh={refreshGridData}
+          />
         </div>
       </div>
     </div>
