@@ -1,4 +1,3 @@
-import React from "react";
 import { RefreshCw } from "lucide-react";
 
 const HabitMiniGrid = ({ habitData, onDayClick, loading, onRefresh }) => {
