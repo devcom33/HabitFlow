@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  getHabitsService,
-  getGridHabitsService,
-} from "../services/getHabitsService";
+import { getHabitsService } from "../services/getHabitsService";
 import { updateHabitService } from "../services/updateHabitService";
 import { getHabitsCompletionsTodayStatus } from "../services/getHabitsCompletionsService";
 
