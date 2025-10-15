@@ -1,11 +1,9 @@
 import NavBar from "../components/NavBar";
-import HabitList from "../components/HabitList";
 import Stats from "../components/Stats";
 import useHabitData from "../hooks/useHabitData";
 
 const Dashboard = () => {
-  const { habitCompletions, toggleHabit, addCompletionHabit, habitData } =
-    useHabitData();
+  const { habitCompletions, addCompletionHabit, habitData } = useHabitData();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -13,7 +11,7 @@ const Dashboard = () => {
 
       <div className="max-w-7xl mx-auto p-6 space-y-6">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent mb-2">
             Welcome back Champion!
           </h1>
           <p className="text-gray-600">
@@ -26,12 +24,6 @@ const Dashboard = () => {
             <Stats habitCompletions={habitCompletions} habitData={habitData} />
           </div>
         </div>
-
-        <HabitList
-          habitCompletions={habitCompletions}
-          toggleHabit={toggleHabit}
-          addHabit={addCompletionHabit}
-        />
       </div>
 
       <div className="text-center py-8 border-t border-gray-200">
