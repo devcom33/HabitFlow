@@ -4,7 +4,7 @@ package org.heymouad.focusapp.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.heymouad.focusapp.enums.RoleName;
+import org.heymouad.focusapp.enums.Gender;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,9 +26,14 @@ public class AppUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String username;
+
     private String firstname;
 
     private String lastname;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     private String email;
 
@@ -41,6 +46,9 @@ public class AppUser implements UserDetails {
     inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<AppRole> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Habit> habits = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
