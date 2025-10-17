@@ -11,15 +11,24 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "habit")
+@Table(name = "habit",
+uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "name"})
+)
 @Builder
 public class Habit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@Table(name = "habit", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", name}))
     private String name;
     private LocalDate createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private AppUser appUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @PrePersist
     protected void onCreate() {
