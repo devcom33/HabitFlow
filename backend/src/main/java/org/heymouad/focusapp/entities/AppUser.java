@@ -47,9 +47,6 @@ public class AppUser implements UserDetails {
     )
     private Set<AppRole> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Habit> habits = new HashSet<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
