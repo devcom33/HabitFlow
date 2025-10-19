@@ -2,6 +2,7 @@ package org.heymouad.focusapp.services.servicesImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.repositories.HabitRepository;
@@ -21,11 +22,16 @@ public class HabitServiceImpl implements HabitService {
 
     @Override
     @Transactional
-    public Habit saveHabit(Habit habit) throws HabitServiceException {
+    public Habit saveHabit(Habit habit, AppUser appUser) throws HabitServiceException {
+        log.warn("starting : ");
         if (habit == null) {
             throw new IllegalArgumentException("Habit cannot be null");
         }
+        if (appUser == null) {
+            throw new IllegalArgumentException("AppUser cannot be null");
+        }
         try {
+            habit.setAppUser(appUser);
             Habit savedHabit = habitRepository.save(habit);
             return savedHabit;
         } catch (DataAccessException e)
