@@ -1,8 +1,11 @@
 import axios from "../api/axiosConfig";
 
-export const addHabitService = async (name) => {
+export const addHabitService = async (name, category) => {
   try {
-    const response = await axios.post("/api/addHabit", { name });
+    const response = await axios.post("/api/addHabit", {
+      name,
+      category: { name: category },
+    });
     console.log("response : ", response.data);
 
     return response.data;

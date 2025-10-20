@@ -1,17 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Plus, X } from "lucide-react";
 import {
   addHabitService,
   addHabitStatsService,
 } from "../services/addHabitService";
 
+import { getCategoriesService } from "../services/getCategoriesService";
+
 const AddHabitModal = ({ isOpen, onClose, onAddHabit }) => {
   const [habitName, setHabitName] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
+  const fetchCategories = async () => {
+    try {
+      const res = await getCategoriesService();
+      console.log("Res : ", res);
+
+      const categoryNames = res.map((category) => category.name);
+
+      setCategories(categoryNames);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (habitName.trim()) {
-      const habit = await addHabitService(habitName.trim());
+      console.log("habitName: ", habitName);
+      console.log("selectedCategory: ", selectedCategory);
+      const habit = await addHabitService(
+        habitName.trim(),
+        selectedCategory.trim()
+      );
+      console.log("Added Habit : ", habit);
       const Completion = await addHabitStatsService(habit.id);
       onAddHabit(Completion);
       setHabitName("");
@@ -41,6 +66,21 @@ const AddHabitModal = ({ isOpen, onClose, onAddHabit }) => {
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Categories
+              </label>
+              <select
+                className="white"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option value="">Select a category</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Habit Name
               </label>
