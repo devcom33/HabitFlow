@@ -120,7 +120,7 @@ When you're ready to contribute:
 
 ## Roadmap
 
-- [ ] Add JWT-based authentication
+- [x] Add JWT-based authentication
 - [ ] Multi-user support
 - [ ] Weekly/monthly reporting
 - [ ] Public profile sharing
