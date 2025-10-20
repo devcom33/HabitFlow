@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.heymouad.focusapp.enums.Gender;
 import org.heymouad.focusapp.enums.RoleName;
 
 import java.util.Set;
@@ -17,10 +18,16 @@ import java.util.Set;
 @NoArgsConstructor
 public class RegisterRequest {
     @NotBlank
+    private String username;
+
+    @NotBlank
     private String firstname;
 
     @NotBlank
     private String lastname;
+
+    @NotBlank
+    private Gender gender;
 
     @Email
     @NotBlank
