@@ -13,7 +13,6 @@ const useHabitData = () => {
 
   const fetchHabits = async () => {
     try {
-      setLoading(true);
       setError(null);
       const result = await getHabitsService();
       console.log("Fetched habits:", result);
@@ -21,14 +20,11 @@ const useHabitData = () => {
     } catch (error) {
       console.error("Error fetching habits:", error);
       setError(error.message || "Failed to fetch habits");
-    } finally {
-      setLoading(false);
     }
   };
 
   const fetchHabitsCompletionsTodayStatus = async () => {
     try {
-      setLoading(true);
       setError(null);
       const result = await getHabitsCompletionsTodayStatus();
       console.log("Fetched Completion habits Status:", result);
@@ -36,8 +32,6 @@ const useHabitData = () => {
     } catch (error) {
       console.error("Error fetching habit Completions:", error);
       setError(error.message || "Failed to fetch habit Completions");
-    } finally {
-      setLoading(false);
     }
   };
   /*
@@ -56,11 +50,16 @@ const useHabitData = () => {
 */
   useEffect(() => {
     const loadData = async () => {
-      await Promise.all([
-        fetchHabits(),
-        //fetchGridData(),
-        fetchHabitsCompletionsTodayStatus(),
-      ]);
+      try {
+        setLoading(true);
+        await Promise.all([
+          fetchHabits(),
+          //fetchGridData(),
+          fetchHabitsCompletionsTodayStatus(),
+        ]);
+      } finally {
+        setLoading(false);
+      }
     };
     loadData();
   }, []);
