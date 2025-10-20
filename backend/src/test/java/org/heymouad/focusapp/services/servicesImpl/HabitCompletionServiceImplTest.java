@@ -5,6 +5,7 @@ import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
 import org.heymouad.focusapp.exceptions.HabitCompletionServiceException;
+import org.heymouad.focusapp.mappers.CategoryMapper;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,61 +30,61 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HabitCompletionServiceImplTest {
+
     @Mock
     private HabitCompletionRepository habitCompletionRepository;
 
+    @Mock
+    private CategoryMapper categoryMapper;
+
     @InjectMocks
     private HabitCompletionServiceImpl habitCompletionService;
+
     private HabitCompletion validHabitCompletion, anotherHabitCompletion;
     private Habit validHabit;
 
     @BeforeEach
-    void setUp()
-    {
+    void setUp() {
         validHabit = createHabit(1L, "Exercise");
         Habit anotherHabit = createHabit(2L, "Read");
         validHabitCompletion = createHabitCompletion(1L, validHabit, true);
         anotherHabitCompletion = createHabitCompletion(2L, anotherHabit, false);
     }
 
-    HabitCompletion createHabitCompletion(Long id, Habit habit, boolean completed)
-    {
+    private HabitCompletion createHabitCompletion(Long id, Habit habit, boolean completed) {
         HabitCompletion habitCompletion = new HabitCompletion();
         habitCompletion.setId(id);
         habitCompletion.setHabit(habit);
         habitCompletion.setCompleted(completed);
         habitCompletion.setCompletionDate(LocalDate.now());
-
         return habitCompletion;
     }
 
-    Habit createHabit(Long id, String name)
-    {
+    private Habit createHabit(Long id, String name) {
         Habit habit = new Habit();
         habit.setId(id);
         habit.setName(name);
-
         return habit;
     }
 
+    //-------------------- saveHabitCompletion --------------------
+
     @Test
-    @DisplayName("Should Save HabitCompletion sucessfully")
     void shouldSaveHabitSuccessfully() {
         when(habitCompletionRepository.save(validHabitCompletion)).thenReturn(validHabitCompletion);
 
-        HabitCompletion savedHabitCompletion = habitCompletionService.saveHabitCompletion(validHabitCompletion);
+        HabitCompletion saved = habitCompletionService.saveHabitCompletion(validHabitCompletion);
 
-        assertThat(savedHabitCompletion)
+        assertThat(saved)
                 .isNotNull()
                 .extracting(HabitCompletion::getId, HabitCompletion::getHabit, HabitCompletion::isCompleted)
                 .containsExactly(1L, validHabit, true);
 
-        verify(habitCompletionRepository, times(1)).save(validHabitCompletion);
+        verify(habitCompletionRepository).save(validHabitCompletion);
     }
 
     @Test
-    @DisplayName("should throws IllegalArgumentException")
-    void shouldTrowsIllegalArgumentExceptionWhenHabitCompletionNull() {
+    void shouldThrowIllegalArgumentExceptionWhenHabitCompletionNull() {
         assertThatThrownBy(() -> habitCompletionService.saveHabitCompletion(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("HabitCompletion cannot be null");
@@ -92,189 +93,139 @@ class HabitCompletionServiceImplTest {
     }
 
     @Test
-    @DisplayName("should throw HabitCompletionServiceException when repository fails")
-    void shouldThrowHabitCompletionServiceExceptionWhenRepositiryFails() {
+    void shouldThrowHabitCompletionServiceExceptionWhenRepositoryFails() {
         when(habitCompletionRepository.save(any(HabitCompletion.class)))
-                .thenThrow(new DataAccessException("Database connection failed") {});
+                .thenThrow(new DataAccessException("DB failed") {});
 
         assertThatThrownBy(() -> habitCompletionService.saveHabitCompletion(validHabitCompletion))
                 .isInstanceOf(HabitCompletionServiceException.class)
-                .hasMessage("Failed to save HabitCompletion")
-                .hasCauseInstanceOf(DataAccessException.class);
+                .hasCauseInstanceOf(DataAccessException.class)
+                .hasMessage("Failed to save HabitCompletion");
 
         verify(habitCompletionRepository).save(validHabitCompletion);
     }
 
-    //---------------------- updateHabitCompletionStatus --------------------------------
+    //-------------------- updateHabitCompletionStatus --------------------
 
     @ParameterizedTest
-    @DisplayName("should throw IllegalArgumentException when habitCompletionId is invalid")
     @ValueSource(longs = {0L, -1L, -100L})
     @NullSource
-    void shouldThrowIllegalArgumentExceptionWhenIdInvalid(Long invalidHabitCompletedId) {
-        assertThatThrownBy(() -> habitCompletionService.updateHabitCompletionStatus(invalidHabitCompletedId, true))
+    void shouldThrowIllegalArgumentExceptionWhenIdInvalid(Long id) {
+        assertThatThrownBy(() -> habitCompletionService.updateHabitCompletionStatus(id, true))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("HabitCompletion Id must be a positive number");
 
-        verify(habitCompletionRepository, never()).findById(invalidHabitCompletedId);
+        verify(habitCompletionRepository, never()).findById(any());
     }
 
     @Test
-    @DisplayName("should throw HabitCompletionDataException when habitCompletionId isnt exists")
     void shouldThrowHabitCompletionNotFoundException() {
-        //given
-        Long invalidId = 100L;
-        //when
-        when(habitCompletionRepository.findById(invalidId)).thenReturn(Optional.empty());
+        Long id = 100L;
+        when(habitCompletionRepository.findById(id)).thenReturn(Optional.empty());
 
-        //then
-        assertThatThrownBy(() -> habitCompletionService.updateHabitCompletionStatus(invalidId, true))
+        assertThatThrownBy(() -> habitCompletionService.updateHabitCompletionStatus(id, true))
                 .isInstanceOf(HabitCompletionDataException.class)
                 .hasMessage("Failed to update habit completion status");
 
-        verify(habitCompletionRepository).findById(invalidId);
+        verify(habitCompletionRepository).findById(id);
     }
 
     @Test
-    void shouldUpdateCompleted()
-    {
-        //given
-        Long completionId = 1L;
-        boolean newCompletedStatus = false;
-        HabitCompletion updatedHabitCompletion = createHabitCompletion(completionId, validHabit, newCompletedStatus);
+    void shouldUpdateCompleted() {
+        Long id = 1L;
+        boolean newStatus = false;
+        HabitCompletion updated = createHabitCompletion(id, validHabit, newStatus);
 
-        //when
-        when(habitCompletionRepository.findById(completionId)).thenReturn(Optional.of(validHabitCompletion));
-        when(habitCompletionRepository.save(any(HabitCompletion.class)))
-                .thenReturn(updatedHabitCompletion);
+        when(habitCompletionRepository.findById(id)).thenReturn(Optional.of(validHabitCompletion));
+        when(habitCompletionRepository.save(validHabitCompletion)).thenReturn(updated);
 
-
-        //then
-        HabitCompletion result = habitCompletionService.updateHabitCompletionStatus(completionId, newCompletedStatus);
+        HabitCompletion result = habitCompletionService.updateHabitCompletionStatus(id, newStatus);
 
         assertThat(result)
-                .isNotNull()
-                .extracting(HabitCompletion::getId,HabitCompletion::getHabit, HabitCompletion::isCompleted)
-                .containsExactly(completionId, validHabit, false);
+                .extracting(HabitCompletion::getId, HabitCompletion::getHabit, HabitCompletion::isCompleted)
+                .containsExactly(id, validHabit, false);
 
-        verify(habitCompletionRepository).findById(completionId);
+        verify(habitCompletionRepository).findById(id);
         verify(habitCompletionRepository).save(validHabitCompletion);
     }
 
     @Test
-    @DisplayName("should return existing HabitCompletion when completed status is unchanged")
     void shouldReturnSameHabitCompletionWhenNoChangeNeeded() {
-        // given
-        Long completionId = 1L;
-        boolean currentStatus = true;
+        Long id = 1L;
+        boolean status = true;
+        HabitCompletion existing = createHabitCompletion(id, validHabit, status);
 
-        HabitCompletion existingHabitCompletion = createHabitCompletion(completionId, validHabit, currentStatus);
+        when(habitCompletionRepository.findById(id)).thenReturn(Optional.of(existing));
 
-        when(habitCompletionRepository.findById(completionId))
-                .thenReturn(Optional.of(existingHabitCompletion));
+        HabitCompletion result = habitCompletionService.updateHabitCompletionStatus(id, status);
 
-        // when
-        HabitCompletion result = habitCompletionService.updateHabitCompletionStatus(completionId, currentStatus);
+        assertThat(result).isSameAs(existing);
 
-        // then
-        assertThat(result)
-                .isSameAs(existingHabitCompletion)
-                .extracting(HabitCompletion::getId, HabitCompletion::getHabit, HabitCompletion::isCompleted)
-                .containsExactly(completionId, validHabit, currentStatus);
-
-        verify(habitCompletionRepository).findById(completionId);
+        verify(habitCompletionRepository).findById(id);
         verify(habitCompletionRepository, never()).save(any());
     }
 
-    //----------------------------getAllHabitsStatus------------------
+    //-------------------- getAllHabitsStatus --------------------
+
     @Test
-    @DisplayName("should return all HabitCompletion status when data exists")
-    void shouldReturnAllHabitCompletionStatus()
-    {
-        //given
-        List<HabitCompletion> expectedHabitCompletion = Arrays.asList(validHabitCompletion, anotherHabitCompletion);
+    void shouldReturnAllHabitCompletionStatus() {
+        when(categoryMapper.toCategoryRequest(any())).thenReturn(null);
+        when(habitCompletionRepository.findAll()).thenReturn(List.of(validHabitCompletion, anotherHabitCompletion));
 
-        //when
+        List<HabitCompletionDto> result = habitCompletionService.getAllHabitsStatus();
 
-        when(habitCompletionRepository.findAll()).thenReturn(expectedHabitCompletion);
-
-        //then
-        List<HabitCompletionDto> actualHabitsCompletion = habitCompletionService.getAllHabitsStatus();
-
-        assertThat(actualHabitsCompletion)
-                .isNotNull()
-                .hasSize(2)
+        assertThat(result).hasSize(2)
                 .extracting(HabitCompletionDto::completed)
                 .containsExactly(true, false);
 
-        verify(habitCompletionRepository, times(1)).findAll();
+        verify(habitCompletionRepository).findAll();
     }
 
     @Test
-    void shouldThrowHabitCompletionServiceException()
-    {
-        //when
-
-        when(habitCompletionRepository.findAll())
-                .thenThrow(new DataAccessException("Database connection failed"){});
-
-        //then
+    void shouldThrowHabitCompletionServiceException() {
+        when(habitCompletionRepository.findAll()).thenThrow(new DataAccessException("DB failed") {});
 
         assertThatThrownBy(() -> habitCompletionService.getAllHabitsStatus())
                 .isInstanceOf(HabitCompletionServiceException.class)
                 .hasMessageContaining("Failed to retrieve completion habits");
 
         verify(habitCompletionRepository).findAll();
-
     }
 
-    //-------------------------getTodayHabitsStatus---------------------------------
+    //-------------------- getTodayHabitsStatus --------------------
+
     @Test
     void shouldReturnAllTodayHabitsStatus() {
-        // given
         LocalDate today = LocalDate.now();
-
         validHabitCompletion.setCompletionDate(today);
         anotherHabitCompletion.setCompletionDate(today);
 
-        List<HabitCompletion> expectedHabitCompletion = Arrays.asList(validHabitCompletion, anotherHabitCompletion);
+        when(categoryMapper.toCategoryRequest(any())).thenReturn(null);
+        when(habitCompletionRepository.findHabitCompletionByCompletionDate(today))
+                .thenReturn(List.of(validHabitCompletion, anotherHabitCompletion));
 
-        // when
-        when(habitCompletionRepository.findHabitCompletionByCompletionDate(today)).thenReturn(expectedHabitCompletion);
+        List<HabitCompletionDto> result = habitCompletionService.getTodayHabitsStatus();
 
-        // then
-        List<HabitCompletionDto> actualHabitsCompletion = habitCompletionService.getTodayHabitsStatus();
-
-        assertThat(actualHabitsCompletion)
-                .isNotNull()
-                .hasSize(2)
+        assertThat(result).hasSize(2)
                 .extracting(HabitCompletionDto::completionDate)
                 .containsExactly(today, today);
 
-        verify(habitCompletionRepository, times(1)).findHabitCompletionByCompletionDate(today);
+        verify(habitCompletionRepository).findHabitCompletionByCompletionDate(today);
     }
 
-
     @Test
-    void shouldThrowHabitCompletionServiceExceptionWhenAnErrorTodayHabitsStatus()
-    {
-        //given
+    void shouldThrowHabitCompletionServiceExceptionWhenTodayStatusFails() {
         LocalDate today = LocalDate.now();
-
-        //when
-
         when(habitCompletionRepository.findHabitCompletionByCompletionDate(today))
-                .thenThrow(new DataAccessException("Database connection failed"){});
-
-        //then
+                .thenThrow(new DataAccessException("DB failed") {});
 
         assertThatThrownBy(() -> habitCompletionService.getTodayHabitsStatus())
                 .isInstanceOf(HabitCompletionServiceException.class)
                 .hasMessageContaining("Failed to retrieve today completion habits");
 
         verify(habitCompletionRepository).findHabitCompletionByCompletionDate(today);
-
     }
+
 
     //-------------resetDailyHabits---------------------------------------
     
