@@ -37,6 +37,8 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/getHabits").hasRole("USER")
                         .requestMatchers("/api/addHabit").hasRole("USER")
+                        .requestMatchers("/api/categories").hasRole("USER")
+                        .requestMatchers("/api/habits/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
