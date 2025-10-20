@@ -3,8 +3,10 @@ package org.heymouad.focusapp.services.servicesImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.entities.AppUser;
+import org.heymouad.focusapp.entities.Category;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.exceptions.HabitServiceException;
+import org.heymouad.focusapp.repositories.CategoryRepository;
 import org.heymouad.focusapp.repositories.HabitRepository;
 import org.heymouad.focusapp.services.HabitService;
 import org.springframework.dao.DataAccessException;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @Slf4j
 public class HabitServiceImpl implements HabitService {
     private final HabitRepository habitRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional
@@ -32,6 +35,13 @@ public class HabitServiceImpl implements HabitService {
         }
         try {
             habit.setAppUser(appUser);
+
+            if (habit.getCategory() != null && habit.getCategory().getName() != null) {
+                Category existingCategory = categoryRepository
+                        .findByName(habit.getCategory().getName())
+                        .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+                habit.setCategory(existingCategory);
+            }
             Habit savedHabit = habitRepository.save(habit);
             return savedHabit;
         } catch (DataAccessException e)
