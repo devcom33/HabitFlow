@@ -1,4 +1,4 @@
 package org.heymouad.focusapp.dtos;
 
-public class CategoryResponse {
+public record CategoryResponse (String name) {
 }
