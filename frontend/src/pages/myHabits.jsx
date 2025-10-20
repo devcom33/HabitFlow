@@ -7,7 +7,7 @@ const MyHabits = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <NavBar onAddHabit={addCompletionHabit} />
+      <NavBar />
       <div className="max-w-7xl mx-auto p-6 space-y-6">
         <HabitList
           habitCompletions={habitCompletions}
