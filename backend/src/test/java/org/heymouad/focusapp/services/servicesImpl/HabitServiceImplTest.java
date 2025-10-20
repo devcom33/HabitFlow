@@ -1,5 +1,6 @@
 package org.heymouad.focusapp.services.servicesImpl;
 
+import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.repositories.HabitRepository;
@@ -28,7 +29,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HabitServiceImplTest {
-
     @Mock
     private HabitRepository habitRepository;
 
@@ -36,11 +36,13 @@ class HabitServiceImplTest {
     private HabitServiceImpl habitService;
 
     private Habit validHabit, anotherHabit;
+    private AppUser testUser;
 
     @BeforeEach
     void setUp() {
         validHabit = createHabit(1L, "Exercise");
         anotherHabit = createHabit(2L, "Read");
+        testUser = createUser(1L, "test@gmail.com");
     }
 
     Habit createHabit(Long id, String name)
@@ -51,13 +53,24 @@ class HabitServiceImplTest {
 
         return habit;
     }
+    AppUser createUser(Long id, String email)
+    {
+        AppUser testUser = new AppUser();
+        testUser.setId(id);
+        testUser.setEmail(email);
+
+        return testUser;
+    }
 
     @Test
     @DisplayName("Should save habit successfully")
     void shouldSaveHabitSuccessfully() throws HabitServiceException {
+
+        validHabit.setAppUser(testUser);
+
         when(habitRepository.save(validHabit)).thenReturn(validHabit);
 
-        Habit savedHabit = habitService.saveHabit(validHabit);
+        Habit savedHabit = habitService.saveHabit(validHabit, testUser);
 
         assertThat(savedHabit)
                 .isNotNull()
@@ -73,7 +86,7 @@ class HabitServiceImplTest {
         when(habitRepository.save(any(Habit.class)))
                 .thenThrow(new DataAccessException("Database connection failed") {});
 
-        assertThatThrownBy(() -> habitService.saveHabit(validHabit))
+        assertThatThrownBy(() -> habitService.saveHabit(validHabit, testUser))
                 .isInstanceOf(HabitServiceException.class)
                 .hasMessage("Failed to save Habit")
                 .hasCauseInstanceOf(DataAccessException.class);
@@ -84,7 +97,7 @@ class HabitServiceImplTest {
     @Test
     @DisplayName("Should throw IllegalArgumentException when habit is null")
     void shouldThrowIllegalArgumentExceptionWhenHabitIsNull() throws HabitServiceException {
-        assertThatThrownBy(() -> habitService.saveHabit(null))
+        assertThatThrownBy(() -> habitService.saveHabit(null, testUser))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Habit cannot be null");
 
@@ -96,7 +109,7 @@ class HabitServiceImplTest {
     @MethodSource("invalidHabits")
     void shouldRejectInvalidHabits(Habit invalidHabit, String testCase) {
         // When & Then
-        assertThatThrownBy(() -> habitService.saveHabit(invalidHabit))
+        assertThatThrownBy(() -> habitService.saveHabit(invalidHabit, testUser))
                 .isInstanceOf(IllegalArgumentException.class)
                 .withFailMessage("Failed for test case: " + testCase);
     }
@@ -182,4 +195,5 @@ class HabitServiceImplTest {
 
         verify(habitRepository).findById(validId);
     }
+
 }
