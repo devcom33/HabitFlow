@@ -8,6 +8,7 @@ import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
 import org.heymouad.focusapp.exceptions.HabitCompletionNotFoundException;
 import org.heymouad.focusapp.exceptions.HabitCompletionServiceException;
+import org.heymouad.focusapp.mappers.CategoryMapper;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.heymouad.focusapp.services.HabitCompletionService;
 import org.springframework.dao.DataAccessException;
@@ -24,6 +25,7 @@ import java.util.Objects;
 @Slf4j
 public class HabitCompletionServiceImpl implements HabitCompletionService {
     private final HabitCompletionRepository habitCompletionRepository;
+    private final CategoryMapper categoryMapper;
 
     @Override
     @Transactional
@@ -74,7 +76,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
                             hc.getId(),
                             hc.isCompleted(),
                             hc.getCompletionDate(),
-                            new HabitDto(hc.getHabit().getId(), hc.getHabit().getName())
+                            new HabitDto(hc.getHabit().getId(), hc.getHabit().getName(), categoryMapper.toCategoryRequest(hc.getHabit().getCategory()))
                     ))
                     .toList();
         } catch (DataAccessException e)
@@ -94,7 +96,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
                             ths.getId(),
                             ths.isCompleted(),
                             ths.getCompletionDate(),
-                            new HabitDto(ths.getHabit().getId(), ths.getHabit().getName())
+                            new HabitDto(ths.getHabit().getId(), ths.getHabit().getName(), categoryMapper.toCategoryRequest(ths.getHabit().getCategory()))
                     ))
                     .toList();
         } catch (DataAccessException e)
@@ -112,7 +114,7 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
                             ths.getId(),
                             ths.isCompleted(),
                             ths.getCompletionDate(),
-                            new HabitDto(ths.getHabit().getId(), ths.getHabit().getName())
+                            new HabitDto(ths.getHabit().getId(), ths.getHabit().getName(), categoryMapper.toCategoryRequest(ths.getHabit().getCategory()))
                     ))
                     .toList();
         }catch (DataAccessException e)

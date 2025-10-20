@@ -28,7 +28,7 @@ public class HabitCompletionController {
     private final HabitCompletionMapper habitCompletionMapper;
 
     @PostMapping("/habits/{habitId}/completions")
-    public ResponseEntity<HabitCompletion> saveHabitCompletion(
+    public ResponseEntity<HabitCompletionDto> saveHabitCompletion(
             @PathVariable Long habitId
     ) throws HabitServiceException, HabitCompletionServiceException {
         Habit habit = habitService.getById(habitId)
@@ -41,7 +41,8 @@ public class HabitCompletionController {
                 .build();
 
         HabitCompletion savedHabitCompletion = habitCompletionService.saveHabitCompletion(habitCompletion);
-        return ResponseEntity.ok(savedHabitCompletion);
+        HabitCompletionDto habitCompletionDto = habitCompletionMapper.toHabitCompletionDto(savedHabitCompletion);
+        return ResponseEntity.ok(habitCompletionDto);
     }
 
 
