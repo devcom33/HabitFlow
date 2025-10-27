@@ -5,9 +5,8 @@ import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
-import java.util.List;
 import java.util.Optional;
 
 public interface HabitService {

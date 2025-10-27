@@ -12,13 +12,11 @@ import org.heymouad.focusapp.mappers.HabitMapper;
 import org.heymouad.focusapp.services.AppUserService;
 import org.heymouad.focusapp.services.HabitService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.awt.print.Pageable;
-import java.util.List;
 
 @RequestMapping("/api")
 @RestController

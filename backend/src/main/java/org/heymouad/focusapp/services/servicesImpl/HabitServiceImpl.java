@@ -2,7 +2,6 @@ package org.heymouad.focusapp.services.servicesImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.heymouad.focusapp.dtos.CategoryRequest;
 import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.entities.Category;
 import org.heymouad.focusapp.entities.Habit;
@@ -13,11 +12,10 @@ import org.heymouad.focusapp.repositories.HabitRepository;
 import org.heymouad.focusapp.services.HabitService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
-import java.util.List;
 import java.util.Optional;
 
 @Service
