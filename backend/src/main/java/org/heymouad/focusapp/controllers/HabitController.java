@@ -2,6 +2,7 @@ package org.heymouad.focusapp.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.heymouad.focusapp.dtos.CategoryRequest;
 import org.heymouad.focusapp.dtos.HabitDto;
 import org.heymouad.focusapp.dtos.HabitResponse;
 import org.heymouad.focusapp.entities.AppUser;
@@ -10,10 +11,13 @@ import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.mappers.HabitMapper;
 import org.heymouad.focusapp.services.AppUserService;
 import org.heymouad.focusapp.services.HabitService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RequestMapping("/api")
@@ -35,13 +39,17 @@ public class HabitController {
         return ResponseEntity.ok(habitResponse);
     }
 
-    
-    @GetMapping("/getHabits")
-    public ResponseEntity<List<HabitResponse>> getAllHabits() throws HabitServiceException {
-        List<Habit> habitList = habitService.getAllHabits();
-        List<HabitResponse> habitResponses = habitList.stream().map(habitMapper::toHabitResponse).toList();
 
-        return ResponseEntity.ok(habitResponses);
+    @GetMapping("/getHabits")
+    public ResponseEntity<Page<HabitResponse>> getHabits(
+            @RequestParam(required = false) String category,
+            @PageableDefault(size = 10, sort = "id") Pageable pageable) throws HabitServiceException {
+
+        Page<Habit> habits = habitService.getHabitsByCategory(category, pageable);
+        Page<HabitResponse> responses = habits.map(habitMapper::toHabitResponse);
+
+        return ResponseEntity.ok(responses);
     }
+
 
 }
