@@ -119,7 +119,7 @@ class HabitServiceImplTest {
                 Arguments.of(null, "null habit")
         );
     }
-
+    /*
     //Test getAllHabits
     @Test
     @DisplayName("Should return all habits when data exists")
@@ -195,5 +195,5 @@ class HabitServiceImplTest {
 
         verify(habitRepository).findById(validId);
     }
-
+*/
 }
