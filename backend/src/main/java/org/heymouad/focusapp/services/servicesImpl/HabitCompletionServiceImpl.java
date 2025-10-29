@@ -4,14 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.dtos.HabitCompletionDto;
 import org.heymouad.focusapp.dtos.HabitDto;
+import org.heymouad.focusapp.entities.Category;
+import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
 import org.heymouad.focusapp.exceptions.HabitCompletionNotFoundException;
 import org.heymouad.focusapp.exceptions.HabitCompletionServiceException;
 import org.heymouad.focusapp.mappers.CategoryMapper;
+import org.heymouad.focusapp.repositories.CategoryRepository;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.heymouad.focusapp.services.HabitCompletionService;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +30,7 @@ import java.util.Objects;
 @Slf4j
 public class HabitCompletionServiceImpl implements HabitCompletionService {
     private final HabitCompletionRepository habitCompletionRepository;
+    private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
     @Override
@@ -83,6 +89,16 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
         {
             throw new HabitCompletionServiceException("Failed to retrieve completion habits", e);
         }
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Page<HabitCompletion> getHabitsCompletionByCategory(String categoryName, Pageable pageable) {
+        if (categoryName == null || categoryName.isBlank())
+        {
+            return habitCompletionRepository.findAll(pageable);
+        }
+        return habitCompletionRepository.findByHabit_Category_NameAndCompletionDate(categoryName, pageable, LocalDate.now());
     }
 
     @Override

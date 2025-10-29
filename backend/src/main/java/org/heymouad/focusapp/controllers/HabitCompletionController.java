@@ -3,6 +3,7 @@ package org.heymouad.focusapp.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.dtos.HabitCompletionDto;
+import org.heymouad.focusapp.dtos.HabitResponse;
 import org.heymouad.focusapp.dtos.HabitUpdateRequest;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
@@ -12,6 +13,9 @@ import org.heymouad.focusapp.exceptions.HabitServiceException;
 import org.heymouad.focusapp.mappers.HabitCompletionMapper;
 import org.heymouad.focusapp.services.HabitCompletionService;
 import org.heymouad.focusapp.services.HabitService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,10 +49,21 @@ public class HabitCompletionController {
         return ResponseEntity.ok(habitCompletionDto);
     }
 
-
+    /*
     @GetMapping("/HabitsCompletion")
     public ResponseEntity<List<HabitCompletionDto>> getHabitsCompletion() throws HabitCompletionServiceException {
         return ResponseEntity.ok(habitCompletionService.getAllHabitsStatus());
+    }*/
+
+    @GetMapping("/HabitsCompletion")
+    public ResponseEntity<Page<HabitCompletionDto>> getHabitsCompletionByCategory(
+            @RequestParam(required = false) String category,
+            @PageableDefault(size = 10, sort = "id") Pageable pageable) throws HabitCompletionServiceException {
+
+        Page<HabitCompletion> habitsCompletion = habitCompletionService.getHabitsCompletionByCategory(category, pageable);
+        Page<HabitCompletionDto> responses = habitsCompletion.map(habitCompletionMapper::toHabitCompletionDto);
+
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/HabitsCompletion/today")

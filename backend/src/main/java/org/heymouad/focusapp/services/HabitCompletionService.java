@@ -4,6 +4,8 @@ import org.heymouad.focusapp.dtos.HabitCompletionDto;
 import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.exceptions.HabitCompletionDataException;
 import org.heymouad.focusapp.exceptions.HabitCompletionServiceException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,5 +14,6 @@ public interface HabitCompletionService {
     List<HabitCompletionDto> getAllHabitsStatus();
     List<HabitCompletionDto> getTodayHabitsStatus();
     HabitCompletion updateHabitCompletionStatus(Long id, Boolean completed);
-    public List<HabitCompletionDto> getHabitsCompletionByHabitId(Long habitId);
+    List<HabitCompletionDto> getHabitsCompletionByHabitId(Long habitId);
+    Page<HabitCompletion> getHabitsCompletionByCategory(String categoryName, Pageable pageable);
 }
