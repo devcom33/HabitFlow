@@ -14,6 +14,26 @@ export const getHabitsService = async () => {
   }
 };
 
+export const getHabitsByCategoryService = async (
+  category,
+  page = 0,
+  size = 9
+) => {
+  try {
+    const response = await axios.get("/api/HabitsCompletion", {
+      params: { category, page, size },
+    });
+    console.log("++++++++++++++++++++++ habits : ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error displaying habits by category:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+
 export const getGridHabitsService = async (habitId) => {
   try {
     const response = await axios.get(`/api/habits/${habitId}/completions`);
