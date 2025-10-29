@@ -11,7 +11,6 @@ const UserSettings = () => {
   const fetchUserInfos = async () => {
     try {
       const data = await getUserDetails();
-      console.log("Fetched user data:", data);
       setUserData(data);
     } catch (error) {
       console.error("Error fetching user details:", error);

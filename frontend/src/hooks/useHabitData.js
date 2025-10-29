@@ -15,7 +15,6 @@ const useHabitData = () => {
     try {
       setError(null);
       const result = await getHabitsService();
-      console.log("Fetched habits:", result);
       setHabits(result.habits || result || []);
     } catch (error) {
       console.error("Error fetching habits:", error);
@@ -27,7 +26,6 @@ const useHabitData = () => {
     try {
       setError(null);
       const result = await getHabitsCompletionsTodayStatus();
-      console.log("Fetched Completion habits Status:", result);
       setHabitCompletions(result || []);
     } catch (error) {
       console.error("Error fetching habit Completions:", error);
@@ -72,8 +70,6 @@ const useHabitData = () => {
       [today]: completedCount,
     }));
   }, [habitCompletions]);
-
-  console.log("habit data new : ", habitData);
 
   const toggleHabit = async (completionId) => {
     setHabitCompletions((prevCompletions) =>

@@ -9,7 +9,6 @@ const useHabitGrid = (habitId) => {
     try {
       setGridLoading(true);
       const gridData = await getGridHabitsService(id);
-      console.log("Fetched grid data:", gridData);
       setHabitData(gridData);
     } catch (error) {
       console.error("Error fetching grid data:", error);
