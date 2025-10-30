@@ -18,7 +18,15 @@ public interface HabitCompletionRepository extends JpaRepository<HabitCompletion
     boolean existsByHabitAndCompletionDate(Habit habit, LocalDate date);
     Page<HabitCompletion> findAll(Pageable pageable);
 
-    Page<HabitCompletion> findByHabit_Category_Name(String categoryName, Pageable pageable);
+    @Query("""
+        SELECT new org.heymouad.focusapp.dtos.HabitCompletionCountDTO(h.completionDate, COUNT(h))
+            FROM HabitCompletion h
+                WHERE h.completionDate >= :startDate
+                    GROUP BY h.completionDate
+                        ORDER BY h.completionDate
+    """
+    )
+    List<HabitCompletionCountDTO> findRecentHabitCompletionCounts(@Param("startDate") LocalDate startDate);
 
     Page<HabitCompletion> findByHabit_Category_NameAndCompletionDate(String categoryName, Pageable pageable, LocalDate now);
 }
