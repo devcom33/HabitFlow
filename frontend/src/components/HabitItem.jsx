@@ -6,6 +6,15 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
     completion.habit.id
   );
 
+  const handleToggle = async (completionId) => {
+    try {
+      await toggleHabit(completionId);
+      refreshGridData();
+    } catch (err) {
+      console.error("Error toggling habit:", err);
+    }
+  };
+
   return (
     <div className="group relative overflow-hidden rounded-xl bg-white shadow-md border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg">
       <div
@@ -43,7 +52,8 @@ const HabitItem = ({ completion, toggleHabit, onDayClick }) => {
           </div>
 
           <button
-            onClick={() => toggleHabit(completion.id)}
+            onClick={() => handleToggle(completion.id)}
+            type="button"
             role="checkbox"
             aria-checked={completion.completed}
             aria-label={

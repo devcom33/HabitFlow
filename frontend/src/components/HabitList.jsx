@@ -8,34 +8,34 @@ import {
 } from "lucide-react";
 import HabitItem from "./HabitItem";
 import AddHabitModal from "./AddHabitModal";
-import { getHabitsByCategoryService } from "../services/getHabitsService";
 import { getCategoriesService } from "../services/getCategoriesService";
+import useFilteredHabits from "../hooks/useFilteredHabits";
 
-const HabitList = ({ habitCompletions, toggleHabit, onAddHabit }) => {
+const HabitList = ({ onAddHabit }) => {
   const [showAddHabit, setShowAddHabit] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [filteredHabits, setFilteredHabits] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const pageSize = 9;
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalElements, setTotalElements] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
 
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const res = await getCategoriesService();
-      const categoryNames = res.map((category) => category.name);
-      setCategories(categoryNames);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    filteredHabits,
+    loading,
+    totalPages,
+    currentPage,
+    toggleHabit,
+    fetchHabits,
+    setCurrentPage,
+  } = useFilteredHabits(selectedCategory);
 
+  // Fetch categories on mount
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await getCategoriesService();
+        setCategories(res.map((c) => c.name));
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
     fetchCategories();
   }, []);
 
@@ -48,29 +48,19 @@ const HabitList = ({ habitCompletions, toggleHabit, onAddHabit }) => {
     setShowAddHabit(false);
   };
 
-  const getHabitsByCategory = async (category, page = 0) => {
-    try {
-      setLoading(true);
-      const result = await getHabitsByCategoryService(category, page, pageSize);
-      console.log("Filtered habits:", result);
-      setFilteredHabits(Array.isArray(result.content) ? result.content : []);
-      setTotalPages(result.totalPages || 0);
-      setTotalElements(result.totalElements || 0);
-      setCurrentPage(page);
-    } catch (error) {
-      console.error("Error fetching habits:", error);
-      setFilteredHabits([]);
-      setTotalPages(0);
-      setTotalElements(0);
-    } finally {
-      setLoading(false);
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+      fetchHabits(selectedCategory, currentPage - 1);
     }
   };
 
-  useEffect(() => {
-    getHabitsByCategory(selectedCategory, 0);
-    console.log("selected habits : ", selectedCategory);
-  }, [selectedCategory]);
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+      fetchHabits(selectedCategory, currentPage + 1);
+    }
+  };
 
   return (
     <>
@@ -92,65 +82,66 @@ const HabitList = ({ habitCompletions, toggleHabit, onAddHabit }) => {
               </span>
             </div>
           </div>
-          <div className="sm:flex-shrink-0 sm:self-auto self-start">
+
+          <div className="sm:flex-shrink-0 sm:self-auto self-start flex items-center gap-2">
             <select
-              className="white"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
+              className="border rounded px-2 py-1 text-sm"
             >
               <option value="">All categories</option>
-              {categories.length > 0 &&
-                categories.map((category, index) => (
-                  <option key={index} value={category}>
-                    {category}
-                  </option>
-                ))}
+              {categories.map((category, idx) => (
+                <option key={idx} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
+
             <button
+              type="button"
               onClick={() => setShowAddHabit(true)}
               className="inline-flex items-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white px-3 sm:px-4 py-2 text-sm shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white transition"
-              aria-label="Add habit"
             >
               <Plus className="w-4 h-4" />
               <span>Add Habit</span>
             </button>
           </div>
         </div>
+
         {loading ? (
-          <div className="text-center">Loading...</div> // Loading indicator
+          <div className="text-center">Loading...</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-4">
-            {filteredHabits?.map((habit) => (
-              <HabitItem
-                key={habit.id}
-                completion={habit}
-                toggleHabit={toggleHabit}
-                onDayClick={handleDayClick}
-              />
-            ))}
-            {filteredHabits.length === 0 && (
+            {filteredHabits.length > 0 ? (
+              filteredHabits.map((habit) => (
+                <HabitItem
+                  key={habit.id}
+                  completion={habit}
+                  toggleHabit={toggleHabit}
+                  onDayClick={handleDayClick}
+                />
+              ))
+            ) : (
               <p>No habits found for this category.</p>
             )}
           </div>
         )}
+
         {totalPages > 1 && (
-          <div>
+          <div className="flex gap-2 mt-2">
             <button
-              className="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
-              onClick={() =>
-                getHabitsByCategory(selectedCategory, currentPage - 1)
-              }
+              onClick={handlePrevPage}
               disabled={currentPage === 0}
+              className="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
               <ChevronLeft className="w-4 h-4" />
               Previous
             </button>
+
             <button
-              className="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
-              onClick={() =>
-                getHabitsByCategory(selectedCategory, currentPage + 1)
-              }
+              onClick={handleNextPage}
               disabled={currentPage >= totalPages - 1}
+              className="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
               Next
               <ChevronRight className="w-4 h-4" />
@@ -158,6 +149,7 @@ const HabitList = ({ habitCompletions, toggleHabit, onAddHabit }) => {
           </div>
         )}
       </div>
+
       <AddHabitModal
         isOpen={showAddHabit}
         onClose={() => setShowAddHabit(false)}
