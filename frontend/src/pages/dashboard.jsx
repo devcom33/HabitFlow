@@ -1,13 +1,26 @@
 import NavBar from "../components/NavBar";
 import Stats from "../components/Stats";
 import useHabitData from "../hooks/useHabitData";
+import HabitCompletionChart from "../components/charts/HabitCompletionChart";
+import { getLast7DaysCompletions } from "../services/dashboardService";
+import { useState, useEffect } from "react";
 
 const Dashboard = () => {
-  const { habitCompletions, addCompletionHabit, habitData } = useHabitData();
+  const { habitCompletions, habitData } = useHabitData();
+  const [last7DaysCompletions, setLast7DaysCompletions] = useState([]);
+
+  useEffect(() => {
+    const fetchCompletions = async () => {
+      const result = await getLast7DaysCompletions();
+      setLast7DaysCompletions(result);
+    };
+
+    fetchCompletions();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <NavBar onAddHabit={addCompletionHabit} />
+      <NavBar />
 
       <div className="max-w-7xl mx-auto p-6 space-y-6">
         <div className="text-center mb-8">
@@ -18,6 +31,8 @@ const Dashboard = () => {
             Track your daily habits and build lasting routines
           </p>
         </div>
+
+        <HabitCompletionChart last7DaysCompletions={last7DaysCompletions} />
 
         <div className="text-center mb-12">
           <div className="relative">
