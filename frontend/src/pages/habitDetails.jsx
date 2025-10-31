@@ -1,24 +1,16 @@
-import React from "react";
 import NavBar from "../components/NavBar";
 import HabitGrid from "../components/HabitGrid";
 import Stats from "../components/Stats";
 import useHabitData from "../hooks/useHabitData";
 
 const HabitDetails = () => {
-  const {
-    habits,
-    habitCompletions,
-    toggleHabit,
-    addCompletionHabit,
-    habitData,
-    loading,
-    error,
-    gridLoading,
-    refreshGridData,
-  } = useHabitData();
+  const { habitCompletions, habitData, gridLoading, refreshGridData } =
+    useHabitData();
+
   const handleDayClick = (dateKey) => {
     console.log(`Clicked on ${dateKey}`);
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <NavBar />
