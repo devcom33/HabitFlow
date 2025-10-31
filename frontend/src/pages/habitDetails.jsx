@@ -1,6 +1,6 @@
 import NavBar from "../components/NavBar";
 import HabitGrid from "../components/HabitGrid";
-import Stats from "../components/Stats";
+import Stats from "../components/charts/Stats";
 import useHabitData from "../hooks/useHabitData";
 
 const HabitDetails = () => {
