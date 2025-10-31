@@ -94,11 +94,8 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
     @Transactional(readOnly = true)
     @Override
     public Page<HabitCompletion> getHabitsCompletionByCategory(String categoryName, Pageable pageable) {
-        if (categoryName == null || categoryName.isBlank())
-        {
-            return habitCompletionRepository.findAll(pageable);
-        }
-        return habitCompletionRepository.findByHabit_Category_NameAndCompletionDate(categoryName, pageable, LocalDate.now());
+        String category = (categoryName == null || categoryName.isBlank()) ? null : categoryName;
+        return habitCompletionRepository.findByCategoryAndDate(category, LocalDate.now(), pageable);
     }
 
     @Override
