@@ -32,29 +32,11 @@ const useHabitData = () => {
       setError(error.message || "Failed to fetch habit Completions");
     }
   };
-  /*
-  const fetchGridData = async () => {
-    try {
-      setGridLoading(true);
-      const gridData = await getGridHabitsService();
-      console.log("Fetched grid data:", gridData);
-      setHabitData(gridData);
-    } catch (error) {
-      console.error("Error fetching grid data:", error);
-    } finally {
-      setGridLoading(false);
-    }
-  };
-*/
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
-        await Promise.all([
-          fetchHabits(),
-          //fetchGridData(),
-          fetchHabitsCompletionsTodayStatus(),
-        ]);
+        await Promise.all([fetchHabits(), fetchHabitsCompletionsTodayStatus()]);
       } finally {
         setLoading(false);
       }
@@ -100,12 +82,6 @@ const useHabitData = () => {
   const addCompletionHabit = (completion) => {
     setHabitCompletions((prev) => [...prev, completion]);
   };
-
-  /*
-  const refreshGridData = () => {
-    fetchGridData();
-  };
-  */
 
   return {
     habits,
