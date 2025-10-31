@@ -45,9 +45,19 @@ const HabitCompletionChart = ({ last7DaysCompletions }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 mb-8">
-      <h2 className="text-lg font-semibold mb-4 text-blue-600">Last 7 Days</h2>
-      <Bar data={data} />
+    <div className="bg-white rounded-xl shadow p-6 mb-8 max-w-6xl mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">
+          Last 7 Days Completion
+        </h2>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+          <span className="text-sm text-gray-600">Completed Habits</span>
+        </div>
+      </div>
+      <div className="w-full">
+        <Bar data={data} />
+      </div>
     </div>
   );
 };
