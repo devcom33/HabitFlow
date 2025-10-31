@@ -1,5 +1,5 @@
 import NavBar from "../components/NavBar";
-import Stats from "../components/Stats";
+import Stats from "../components/charts/Stats";
 import useHabitData from "../hooks/useHabitData";
 import HabitCompletionChart from "../components/charts/HabitCompletionChart";
 import { getLast7DaysCompletions } from "../services/dashboardService";
@@ -22,23 +22,10 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <NavBar />
 
-      <div className="max-w-7xl mx-auto p-6 space-y-6">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent mb-2">
-            Welcome back Champion!
-          </h1>
-          <p className="text-gray-600">
-            Track your daily habits and build lasting routines
-          </p>
-        </div>
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        <Stats habitCompletions={habitCompletions} habitData={habitData} />
 
         <HabitCompletionChart last7DaysCompletions={last7DaysCompletions} />
-
-        <div className="text-center mb-12">
-          <div className="relative">
-            <Stats habitCompletions={habitCompletions} habitData={habitData} />
-          </div>
-        </div>
       </div>
 
       <div className="text-center py-8 border-t border-gray-200">
