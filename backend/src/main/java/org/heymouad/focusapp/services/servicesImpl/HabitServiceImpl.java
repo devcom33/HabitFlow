@@ -24,7 +24,6 @@ import java.util.Optional;
 public class HabitServiceImpl implements HabitService {
     private final HabitRepository habitRepository;
     private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
 
     @Override
     @Transactional

@@ -48,6 +48,4 @@ public class HabitController {
 
         return ResponseEntity.ok(responses);
     }
-
-
 }
