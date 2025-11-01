@@ -1,5 +1,6 @@
 package org.heymouad.focusapp.repositories;
 
+import org.heymouad.focusapp.dtos.CompletionStatsDTO;
 import org.heymouad.focusapp.dtos.HabitCompletionCountDTO;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
@@ -8,10 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
 
+
+@Repository
 public interface HabitCompletionRepository extends JpaRepository<HabitCompletion, Long> {
     List<HabitCompletion> findHabitCompletionByCompletionDate(LocalDate completionDate);
     List<HabitCompletion> findHabitCompletionByHabit_Id(Long HabitId);
@@ -33,4 +37,10 @@ public interface HabitCompletionRepository extends JpaRepository<HabitCompletion
     )
     List<HabitCompletionCountDTO> findRecentHabitCompletionCounts(@Param("startDate") LocalDate startDate);
 
+    @Query("""
+        SELECT SUM(CASE WHEN h.completed = true THEN 1 ELSE 0), COUNT(h)
+        FROM HabitCompletion h
+        WHERE h.completionDate = :date
+""")
+    CompletionStatsDTO findCompletionStats(@Param("date") LocalDate date);
 }

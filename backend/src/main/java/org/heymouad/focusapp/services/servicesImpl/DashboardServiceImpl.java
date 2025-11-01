@@ -1,7 +1,9 @@
 package org.heymouad.focusapp.services.servicesImpl;
 
 import lombok.RequiredArgsConstructor;
+import org.heymouad.focusapp.dtos.CompletionStatsDTO;
 import org.heymouad.focusapp.dtos.HabitCompletionCountDTO;
+import org.heymouad.focusapp.entities.HabitCompletion;
 import org.heymouad.focusapp.repositories.HabitCompletionRepository;
 import org.heymouad.focusapp.services.DashboardService;
 import org.springframework.stereotype.Service;
@@ -21,4 +23,14 @@ public class DashboardServiceImpl implements DashboardService {
         return habitCompletionRepository.findRecentHabitCompletionCounts(startDate);
     }
 
+    @Override
+    public double completionRate()
+    {
+        CompletionStatsDTO stats = habitCompletionRepository.findCompletionStats(LocalDate.now());
+
+        if (stats == null || stats.total() == 0)
+            return 0.0;
+
+        return (double) stats.completed() / stats.total();
+    }
 }

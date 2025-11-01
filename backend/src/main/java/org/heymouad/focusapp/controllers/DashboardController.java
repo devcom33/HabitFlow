@@ -12,15 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@RequestMapping("/api/dashboard")
 @RestController
+@RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
+
     private final DashboardService dashboardService;
 
     @GetMapping("/last-7-days-completions")
-    public ResponseEntity<List<HabitCompletionCountDTO>> getLast7DaysCompletions()
-    {
+    public ResponseEntity<List<HabitCompletionCountDTO>> getLast7DaysCompletions() {
         return ResponseEntity.ok(dashboardService.getLast7DaysCompletions());
     }
+
+    @GetMapping("/completion-rate")
+    public ResponseEntity<Double> getCompletionRate() {
+        return ResponseEntity.ok(dashboardService.completionRate());
+    }
 }
+
