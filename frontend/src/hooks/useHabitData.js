@@ -1,27 +1,27 @@
 import { useState, useEffect } from "react";
-import { getHabitsService } from "../services/getHabitsService";
 import { updateHabitService } from "../services/updateHabitService";
 import { getHabitsCompletionsTodayStatus } from "../services/getHabitsCompletionsService";
 
 const useHabitData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [habits, setHabits] = useState([]);
+  //const [habits, setHabits] = useState([]);
   const [habitCompletions, setHabitCompletions] = useState([]);
   const [habitData, setHabitData] = useState({});
   //const [gridLoading, setGridLoading] = useState(false);
-
+  /*
   const fetchHabits = async () => {
     try {
       setError(null);
       const result = await getHabitsService();
       setHabits(result.habits || result || []);
+      console.log("result :::: ", result);
     } catch (error) {
       console.error("Error fetching habits:", error);
       setError(error.message || "Failed to fetch habits");
     }
   };
-
+*/
   const fetchHabitsCompletionsTodayStatus = async () => {
     try {
       setError(null);
@@ -36,7 +36,7 @@ const useHabitData = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        await Promise.all([fetchHabits(), fetchHabitsCompletionsTodayStatus()]);
+        await Promise.all([fetchHabitsCompletionsTodayStatus()]);
       } finally {
         setLoading(false);
       }
@@ -84,7 +84,7 @@ const useHabitData = () => {
   };
 
   return {
-    habits,
+    //habits,
     habitCompletions,
     toggleHabit,
     addCompletionHabit,
@@ -92,7 +92,7 @@ const useHabitData = () => {
     loading,
     error,
     //gridLoading,
-    refetch: fetchHabits,
+    //refetch: fetchHabits,
     //refreshGridData,
   };
 };
