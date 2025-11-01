@@ -38,9 +38,13 @@ public interface HabitCompletionRepository extends JpaRepository<HabitCompletion
     List<HabitCompletionCountDTO> findRecentHabitCompletionCounts(@Param("startDate") LocalDate startDate);
 
     @Query("""
-        SELECT SUM(CASE WHEN h.completed = true THEN 1 ELSE 0), COUNT(h)
-        FROM HabitCompletion h
-        WHERE h.completionDate = :date
+    SELECT new org.heymouad.focusapp.dtos.CompletionStatsDTO(
+        SUM(CASE WHEN h.completed = true THEN 1 ELSE 0 END),
+        COUNT(h)
+    )
+    FROM HabitCompletion h
+    WHERE h.completionDate = :date
 """)
     CompletionStatsDTO findCompletionStats(@Param("date") LocalDate date);
+
 }
