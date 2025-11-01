@@ -30,13 +30,10 @@ const AddHabitModal = ({ isOpen, onClose, onAddHabit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (habitName.trim()) {
-      console.log("habitName: ", habitName);
-      console.log("selectedCategory: ", selectedCategory);
       const habit = await addHabitService(
         habitName.trim(),
         selectedCategory.trim()
       );
-      console.log("Added Habit : ", habit);
       const Completion = await addHabitStatsService(habit.id);
       onAddHabit(Completion);
       setHabitName("");
