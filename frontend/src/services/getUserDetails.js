@@ -3,7 +3,7 @@ import axios from "../api/axiosConfig";
 export const getUserDetails = async () => {
   try {
     const response = await axios.get(`/api/v1/user/settings`);
-    console.log("info : ", response.data);
+    console.log("++ info : ", response.data);
     return response.data;
   } catch (error) {
     console.error(
