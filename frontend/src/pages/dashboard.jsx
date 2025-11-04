@@ -2,6 +2,7 @@ import NavBar from "../components/NavBar";
 import Stats from "../components/charts/Stats";
 import useHabitData from "../hooks/useHabitData";
 import HabitCompletionChart from "../components/charts/HabitCompletionChart";
+import CircleChart from "../components/charts/CircleChart";
 import { getLast7DaysCompletions } from "../services/dashboardService";
 import { useState, useEffect } from "react";
 
@@ -26,6 +27,7 @@ const Dashboard = () => {
         <Stats habitCompletions={habitCompletions} habitData={habitData} />
 
         <HabitCompletionChart last7DaysCompletions={last7DaysCompletions} />
+        <CircleChart />
       </div>
 
       <div className="text-center py-8 border-t border-gray-200">
