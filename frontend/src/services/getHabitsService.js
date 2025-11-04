@@ -23,7 +23,6 @@ export const getHabitsByCategoryService = async (
     const response = await axios.get("/api/HabitsCompletion", {
       params: { category, page, size },
     });
-    console.log("++++++++++++++++++++++ habits : ", response.data);
     return response.data;
   } catch (error) {
     console.error(

@@ -19,14 +19,11 @@ const HabitCompletionChart = ({ last7DaysCompletions }) => {
     Legend
   );
 
-  console.log("last7DaysCompletions", last7DaysCompletions);
-
   const days = [...Array(7)].map((_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - (6 - i));
     return d.toISOString().slice(0, 10);
   });
-  console.log("days :", days);
   const dataPerDay = days.map((day) =>
     last7DaysCompletions
       .filter((h) => h.completionDate?.startsWith(day))
