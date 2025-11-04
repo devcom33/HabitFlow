@@ -22,7 +22,12 @@ public class DashboardServiceImpl implements DashboardService {
         LocalDate startDate = LocalDate.now().minusDays(7);
         return habitCompletionRepository.findRecentHabitCompletionCounts(startDate);
     }
-
+    @Override
+    public Object [] getCategoryStats()
+    {
+        LocalDate startDate = LocalDate.now().minusDays(7);
+        return habitCompletionRepository.findCategoryStats(startDate);
+    }
     @Override
     public double completionRate()
     {

@@ -47,4 +47,8 @@ public interface HabitCompletionRepository extends JpaRepository<HabitCompletion
 """)
     CompletionStatsDTO findCompletionStats(@Param("date") LocalDate date);
 
+    @Query("""
+    SELECT COUNT(h), h.habit.category.name FROM HabitCompletion h WHERE (h.completionDate >= :startDate AND h.completed = true) GROUP BY h.habit.category
+""")
+    Object [] findCategoryStats(@Param("startDate") LocalDate startDate);
 }

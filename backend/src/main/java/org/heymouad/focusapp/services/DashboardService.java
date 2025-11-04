@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface DashboardService {
     List<HabitCompletionCountDTO> getLast7DaysCompletions();
+    Object [] getCategoryStats();
     double completionRate();
 }
