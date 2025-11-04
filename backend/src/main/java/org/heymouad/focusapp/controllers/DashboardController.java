@@ -28,5 +28,10 @@ public class DashboardController {
     public ResponseEntity<Double> getCompletionRate() {
         return ResponseEntity.ok(dashboardService.completionRate());
     }
+
+    @GetMapping("/category-stats")
+    public ResponseEntity<Object []> getCategoryStats() {
+        return ResponseEntity.ok(dashboardService.getCategoryStats());
+    }
 }
 
