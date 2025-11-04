@@ -9,3 +9,13 @@ export const getLast7DaysCompletions = async () => {
     throw error;
   }
 };
+
+export const getCategoryStats = async () => {
+  try {
+    const response = await axios.get("/api/dashboard/category-stats");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching category stats:", error);
+    throw error;
+  }
+};
