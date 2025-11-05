@@ -10,6 +10,7 @@ import HabitItem from "./HabitItem";
 import AddHabitModal from "./AddHabitModal";
 import { getCategoriesService } from "../services/getCategoriesService";
 import useFilteredHabits from "../hooks/useFilteredHabits";
+import { ToastContainer } from "react-toastify";
 
 const HabitList = ({ onAddHabit }) => {
   const [showAddHabit, setShowAddHabit] = useState(false);
@@ -82,7 +83,6 @@ const HabitList = ({ onAddHabit }) => {
               </span>
             </div>
           </div>
-
           <div className="sm:flex-shrink-0 sm:self-auto self-start flex items-center gap-2">
             <select
               value={selectedCategory}
@@ -155,6 +155,7 @@ const HabitList = ({ onAddHabit }) => {
         onClose={() => setShowAddHabit(false)}
         onAddHabit={handleAddHabit}
       />
+      <ToastContainer />
     </>
   );
 };

@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Plus, X } from "lucide-react";
 import {
   addHabitService,
   addHabitStatsService,
 } from "../services/addHabitService";
-
 import { getCategoriesService } from "../services/getCategoriesService";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddHabitModal = ({ isOpen, onClose, onAddHabit }) => {
   const [habitName, setHabitName] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const notify = () => toast.success("Habit added successfully!");
 
   const fetchCategories = async () => {
     try {
       const res = await getCategoriesService();
-      console.log("Res : ", res);
-
       const categoryNames = res.map((category) => category.name);
 
       setCategories(categoryNames);
@@ -27,6 +26,7 @@ const AddHabitModal = ({ isOpen, onClose, onAddHabit }) => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (habitName.trim()) {
@@ -103,6 +103,7 @@ const AddHabitModal = ({ isOpen, onClose, onAddHabit }) => {
                 type="submit"
                 className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 disabled:from-gray-600 disabled:to-gray-700 text-white px-4 py-2 rounded-xl transition-all duration-200 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed font-medium"
                 disabled={!habitName.trim()}
+                onClick={notify}
               >
                 Add Habit
               </button>
