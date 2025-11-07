@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-import { login as loginService } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
 
@@ -27,8 +26,7 @@ const Login = () => {
     setError(null);
     setLoading(true);
     try {
-      const data = await loginService(formData.email, formData.password);
-      login(data);
+      await login(formData.email, formData.password);
       navigate("/");
     } catch (err) {
       setError("Invalid email or password.");
