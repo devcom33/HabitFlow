@@ -15,11 +15,11 @@ public class NotificationServiceImpl implements NotificationService {
     private final SimpMessagingTemplate messagingTemplate;
 
 
-    public void sendNotification(String userId, Notification notification)
+    public void sendNotification(String userEmail, Notification notification)
     {
-        log.info("Sending WS notification to {} with payload {}", userId, notification);
+        log.info("Sending WS notification to {} with payload {}", userEmail, notification);
         messagingTemplate.convertAndSendToUser(
-                userId,
+                userEmail,
                 "/queue/notification",
                 notification
         );
