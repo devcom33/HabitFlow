@@ -34,3 +34,16 @@ export const updateUserSettings = async (userInfo) => {
     throw error;
   }
 };
+
+export const getUserProfile = async (username) => {
+  try {
+    const response = await axios.get(`/api/v1/user/username/${username}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error displaying User details:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};

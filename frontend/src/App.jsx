@@ -7,6 +7,7 @@ import UserSettings from "./pages/userSettings";
 import MyHabits from "./pages/myHabits";
 import Login from "./pages/Login";
 import { AuthProvider } from "./store/AuthContext";
+import Profile from "./pages/profile";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/profile/:username" element={<Profile />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
