@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface HabitService {
     Habit saveHabit(Habit habit, AppUser appUser) throws HabitServiceException;
     Page<Habit> getHabits(Pageable pageable) throws HabitServiceException;
-    Page<Habit> getHabitsByCategory(String categoryName, Pageable pageable);
+    Page<Habit> getHabitsByCategory(String categoryName, Pageable pageable, AppUser appUser);
     Optional<Habit> getById(Long habitId) throws HabitServiceException;
 }

@@ -23,6 +23,11 @@ public class HabitCompletion {
     @JoinColumn(name = "habit_id", nullable = false)
     private Habit habit;
     private boolean completed;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private AppUser appUser;
+
     private LocalDate completionDate;
 
     @PrePersist

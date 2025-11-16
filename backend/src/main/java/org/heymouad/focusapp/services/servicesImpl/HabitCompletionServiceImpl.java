@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.dtos.HabitCompletionDto;
 import org.heymouad.focusapp.dtos.HabitDto;
+import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.entities.Category;
 import org.heymouad.focusapp.entities.Habit;
 import org.heymouad.focusapp.entities.HabitCompletion;
@@ -30,16 +31,16 @@ import java.util.Objects;
 @Slf4j
 public class HabitCompletionServiceImpl implements HabitCompletionService {
     private final HabitCompletionRepository habitCompletionRepository;
-    private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
     @Override
     @Transactional
-    public HabitCompletion saveHabitCompletion(HabitCompletion habitCompletion) {
+    public HabitCompletion saveHabitCompletion(HabitCompletion habitCompletion, AppUser appUser) {
         if (habitCompletion == null) {
             throw new IllegalArgumentException("HabitCompletion cannot be null");
         }
         try {
+            habitCompletion.setAppUser(appUser);
             return habitCompletionRepository.save(habitCompletion);
         } catch (DataAccessException e)
         {
@@ -93,17 +94,17 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<HabitCompletion> getHabitsCompletionByCategory(String categoryName, Pageable pageable) {
+    public Page<HabitCompletion> getHabitsCompletionByCategory(String categoryName, AppUser appUser, Pageable pageable) {
         String category = (categoryName == null || categoryName.isBlank()) ? null : categoryName;
-        return habitCompletionRepository.findByCategoryAndDate(category, LocalDate.now(), pageable);
+        return habitCompletionRepository.findByCategoryAndDateAndAppUser(category, LocalDate.now(), appUser, pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<HabitCompletionDto> getTodayHabitsStatus() {
+    public List<HabitCompletionDto> getTodayHabitsStatus(AppUser appUser) {
         try {
 
-            return habitCompletionRepository.findHabitCompletionByCompletionDate(LocalDate.now())
+            return habitCompletionRepository.findHabitCompletionByCompletionDateAndAppUser(LocalDate.now(), appUser)
                     .stream()
                     .map(ths -> new HabitCompletionDto(
                             ths.getId(),
@@ -119,9 +120,9 @@ public class HabitCompletionServiceImpl implements HabitCompletionService {
     }
 
     @Override
-    public List<HabitCompletionDto> getHabitsCompletionByHabitId(Long habitId) {
+    public List<HabitCompletionDto> getHabitsCompletionByHabitId(Long habitId, AppUser appUser) {
         try{
-            return habitCompletionRepository.findHabitCompletionByHabit_Id(habitId)
+            return habitCompletionRepository.findHabitCompletionByHabit_IdAndAppUser(habitId, appUser)
                     .stream()
                     .map(ths -> new HabitCompletionDto(
                             ths.getId(),

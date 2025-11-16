@@ -41,9 +41,12 @@ public class HabitController {
     @GetMapping("/getHabits")
     public ResponseEntity<Page<HabitResponse>> getHabits(
             @RequestParam(required = false) String category,
-            @PageableDefault(size = 10, sort = "id") Pageable pageable) throws HabitServiceException {
+            @PageableDefault(size = 10, sort = "id") Pageable pageable,
+            Authentication authentication) throws HabitServiceException {
+        String email = authentication.getName();
+        AppUser appUser = appUserService.getUserByEmail(email);
 
-        Page<Habit> habits = habitService.getHabitsByCategory(category, pageable);
+        Page<Habit> habits = habitService.getHabitsByCategory(category, pageable, appUser);
         Page<HabitResponse> responses = habits.map(habitMapper::toHabitResponse);
 
         return ResponseEntity.ok(responses);

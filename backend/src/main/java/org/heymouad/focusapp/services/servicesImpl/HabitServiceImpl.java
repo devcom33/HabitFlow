@@ -5,11 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.heymouad.focusapp.entities.AppUser;
 import org.heymouad.focusapp.entities.Category;
 import org.heymouad.focusapp.entities.Habit;
+import org.heymouad.focusapp.entities.Notification;
+import org.heymouad.focusapp.enums.NotificationStatus;
 import org.heymouad.focusapp.exceptions.HabitServiceException;
-import org.heymouad.focusapp.mappers.CategoryMapper;
 import org.heymouad.focusapp.repositories.CategoryRepository;
 import org.heymouad.focusapp.repositories.HabitRepository;
 import org.heymouad.focusapp.services.HabitService;
+import org.heymouad.focusapp.services.NotificationService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class HabitServiceImpl implements HabitService {
     private final HabitRepository habitRepository;
     private final CategoryRepository categoryRepository;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional
@@ -45,6 +48,13 @@ public class HabitServiceImpl implements HabitService {
                 habit.setCategory(existingCategory);
             }
             Habit savedHabit = habitRepository.save(habit);
+            notificationService.sendNotification(
+                    appUser.getEmail(),
+                    Notification.builder()
+                            .status(NotificationStatus.UNREAD)
+                            .message("You've Add New Habit")
+                            .build()
+            );
             return savedHabit;
         } catch (DataAccessException e)
         {
@@ -65,15 +75,15 @@ public class HabitServiceImpl implements HabitService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<Habit> getHabitsByCategory(String categoryName, Pageable pageable) {
+    public Page<Habit> getHabitsByCategory(String categoryName, Pageable pageable, AppUser appUser) {
         if (categoryName == null || categoryName.isBlank())
         {
-            return habitRepository.findAll(pageable);
+            return habitRepository.findAllByAppUser(appUser, pageable);
         }
         Category category = categoryRepository
                 .findByName(categoryName)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found: " + categoryName));
-        return habitRepository.findByCategory(category, pageable);
+        return habitRepository.findByCategoryAndAppUser(category, appUser, pageable);
     }
 
     @Override
