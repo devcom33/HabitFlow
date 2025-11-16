@@ -21,6 +21,11 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppUser getUserDetails(String username) {
+        return appUserRepository.findByUsername(username).orElseThrow(()->new RuntimeException("User not found."));
+    }
+
+    @Override
     public AppUser getUserByEmail(String email) {
         return appUserRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found: "+ email));
     }

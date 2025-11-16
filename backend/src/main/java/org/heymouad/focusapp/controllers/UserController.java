@@ -11,7 +11,6 @@ import org.heymouad.focusapp.services.AppUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.HandlerMapping;
 
 @RequestMapping("/api/v1/user")
 @RestController
@@ -48,5 +47,11 @@ public class UserController {
         AppUser appUser = appUserService.getUserDetails(id);
         UserInfoResponse userInfo = appUserMapper.toUserInfoResponse(appUser);
         return ResponseEntity.ok().body(userInfo);
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserInfoResponse> getUserProfile(@PathVariable String username) {
+        AppUser user = appUserService.getUserDetails(username);
+        return ResponseEntity.ok(appUserMapper.toUserInfoResponse(user));
     }
 }

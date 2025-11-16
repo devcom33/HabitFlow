@@ -43,9 +43,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .collect(Collectors.toSet());
 
         var user = AppUser.builder()
+                .username(request.getUsername())
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
+                .gender(request.getGender())
                 .roles(assignedRoles)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();

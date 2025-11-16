@@ -6,7 +6,7 @@ import org.heymouad.focusapp.entities.AppUser;
 
 public interface AppUserService {
     AppUser getUserDetails(Long id);
-
+    AppUser getUserDetails(String username);
     AppUser getUserByEmail(String email);
 
     AppUserResponse updateUserSettings(String currentUserEmail, UserInfoRequest userInfoRequest);
