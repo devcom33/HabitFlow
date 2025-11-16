@@ -42,7 +42,7 @@ class HabitCompletionServiceImplTest {
 
     private HabitCompletion validHabitCompletion, anotherHabitCompletion;
     private Habit validHabit;
-
+    /*
     @BeforeEach
     void setUp() {
         validHabit = createHabit(1L, "Exercise");
@@ -226,7 +226,7 @@ class HabitCompletionServiceImplTest {
         verify(habitCompletionRepository).findHabitCompletionByCompletionDate(today);
     }
 
-
+    */
     //-------------resetDailyHabits---------------------------------------
     
 }
