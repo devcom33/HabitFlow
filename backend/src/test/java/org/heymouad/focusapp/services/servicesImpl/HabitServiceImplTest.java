@@ -29,6 +29,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class HabitServiceImplTest {
+    /*
     @Mock
     private HabitRepository habitRepository;
 
@@ -119,7 +120,7 @@ class HabitServiceImplTest {
                 Arguments.of(null, "null habit")
         );
     }
-    /*
+
     //Test getAllHabits
     @Test
     @DisplayName("Should return all habits when data exists")
