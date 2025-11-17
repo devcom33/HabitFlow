@@ -14,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token;
+    private String username;
     private String email;
     private String firstname;
     private String lastname;

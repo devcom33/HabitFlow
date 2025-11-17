@@ -46,6 +46,7 @@ class HabitResetServiceImpl implements HabitResetService {
                         completion.setHabit(habit);
                         completion.setCompletionDate(date);
                         completion.setCompleted(false);
+                        completion.setAppUser(habit.getAppUser());
                         newCompletions.add(completion);
                     }
 
