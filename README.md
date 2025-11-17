@@ -82,6 +82,9 @@ http://localhost:5173
 
 ## 📸 Screenshots
 
+
+![Screenshot](./frontend/public/register.png)
+![Screenshot](./frontend/public/login.png)
 ![Screenshot](./frontend/public/habitflow.png)
 ![Screenshot](./frontend/public/habitflow-2.png)
 
