@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getUserProfile } from "../services/getUserDetails";
+import {
+  getUserProfile,
+  getCurrentUserProfile,
+} from "../services/getUserDetails";
 import {
   User,
   EnvelopeSimple,
@@ -15,6 +18,7 @@ import {
   CheckCircle,
 } from "phosphor-react";
 import NavBar from "../components/NavBar";
+import { useAuth } from "../store/AuthContext";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -23,10 +27,32 @@ const Profile = () => {
 
   const { username } = useParams();
 
+  const { user, loading: authLoading } = useAuth();
+
+  console.log("+++ : user : ", user);
+  const currentUsername = user?.username;
+
   const fetchUserInfos = async () => {
+    if (authLoading) return;
+
+    if (!username) {
+      setLoading(false);
+      setError("Invalide Profile Path.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
     try {
-      setLoading(true);
-      const data = await getUserProfile(username);
+      let data;
+
+      if (currentUsername && username === currentUsername) {
+        data = await getCurrentUserProfile();
+      } else {
+        data = await getUserProfile(username);
+      }
+
       setUserData(data);
     } catch (error) {
       console.error("Error fetching user details:", error);
@@ -37,10 +63,8 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (username) {
-      fetchUserInfos();
-    }
-  }, [username]);
+    fetchUserInfos();
+  }, [username, currentUsername, authLoading]);
 
   // Loading State
   if (loading) {
