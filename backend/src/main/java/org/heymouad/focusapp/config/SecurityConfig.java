@@ -34,7 +34,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/api/v1/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/api/v1/auth/**", "/ws/**").permitAll()
+                        .requestMatchers("/api/dashboard/**").hasRole("USER")
                         .requestMatchers("/api/getHabits").hasRole("USER")
                         .requestMatchers("/api/addHabit").hasRole("USER")
                         .requestMatchers("/api/categories").hasRole("USER")
