@@ -54,4 +54,12 @@ public class UserController {
         AppUser user = appUserService.getUserDetails(username);
         return ResponseEntity.ok(appUserMapper.toUserInfoResponse(user));
     }
+
+    @GetMapping("/currentUser")
+    public ResponseEntity<UserInfoResponse> getCurrentUserProfile(Authentication authentication) {
+        String email = authentication.getName();
+        AppUser appUser = appUserService.getUserByEmail(email);
+        return ResponseEntity.ok(appUserMapper.toUserInfoResponse(appUser));
+    }
+
 }
