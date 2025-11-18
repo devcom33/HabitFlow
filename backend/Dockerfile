@@ -10,4 +10,4 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar habitflow-image.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "habitflow-image.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "habitflow-image.jar"]
